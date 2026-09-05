@@ -44,6 +44,6 @@ body {
 .animate-marquee-ltr {
   display: inline-block;
   white-space: nowrap;
-  animation: marqueeLTR 20s linear infinite;
+  animation: marqueeLTR 38s linear infinite;
   will-change: transform;
 }
