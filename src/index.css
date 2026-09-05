@@ -31,19 +31,20 @@ body {
   z-index: 10;
 }
 
-/* Reliable Left-to-Right Scrolling Marquee Animation */
-@keyframes marqueeLTR {
+/* Seamless Continuous Left-to-Right Scrolling Marquee Animation (Zero Gaps) */
+@keyframes marqueeSeamlessLTR {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(0%);
   }
 }
 
 .animate-marquee-ltr {
-  display: inline-block;
+  display: flex;
   white-space: nowrap;
-  animation: marqueeLTR 38s linear infinite;
+  width: max-content;
+  animation: marqueeSeamlessLTR 28s linear infinite;
   will-change: transform;
 }

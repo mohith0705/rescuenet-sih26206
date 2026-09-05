@@ -22,7 +22,8 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount, curr
         {/* Marquee Motion Scrolling Text */}
         <div className="overflow-hidden whitespace-nowrap mx-4 flex-1 relative flex items-center">
           <div className="animate-marquee-ltr font-semibold tracking-wide text-red-50 text-[12px]">
-            🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert}
+            <span className="shrink-0 pr-6">🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp;</span>
+            <span className="shrink-0 pr-6">🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp;</span>
           </div>
         </div>
 
