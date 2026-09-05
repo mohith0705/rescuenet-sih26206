@@ -92,7 +92,7 @@ export default function App() {
   const activeSosCount = sosRequests.filter(s => s.status === 'PENDING').length;
 
   const appContent = (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans relative">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans relative">
       {/* Mobile Top App Bar */}
       <MobileTopBar 
         isOnline={isOnline}
@@ -105,18 +105,18 @@ export default function App() {
 
       {/* Sub-header banner when in Responder or Command Mode */}
       {activeRole !== 'citizen' && (
-        <div className="bg-[#10192e] border-b border-slate-800 px-3 py-2 flex items-center justify-between">
+        <div className="bg-white border-b border-slate-200 px-3 py-2 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2">
             <span className={`w-2 h-2 rounded-full ${
-              activeRole === 'rescue' ? 'bg-blue-400 animate-ping' : 'bg-emerald-400'
+              activeRole === 'rescue' ? 'bg-blue-600 animate-ping' : 'bg-emerald-600'
             }`} />
-            <span className="text-xs font-bold text-slate-200">
+            <span className="text-xs font-extrabold text-slate-800">
               {activeRole === 'rescue' ? 'NDRF Field Triage Terminal' : 'Disaster HQ Command Console'}
             </span>
           </div>
           <button
             onClick={() => setActiveRole('citizen')}
-            className="flex items-center gap-1 text-[11px] font-bold text-rose-400 hover:text-rose-300 bg-rose-950/50 border border-rose-800/40 px-2 py-0.5 rounded-lg touch-press"
+            className="flex items-center gap-1 text-[11px] font-bold text-red-600 hover:text-red-700 bg-red-50 border border-red-200 px-2.5 py-1 rounded-lg touch-press"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             <span>Citizen Mode</span>
@@ -188,16 +188,16 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center">
+    <div className="min-h-screen bg-slate-100 flex flex-col justify-center items-center">
       {/* Floating Demo Mode Switcher (visible on desktop screens for hackathon presentations) */}
-      <div className="hidden lg:flex fixed top-3 right-4 z-[99] items-center gap-1.5 bg-slate-900/90 backdrop-blur border border-slate-700/80 px-2.5 py-1.5 rounded-full shadow-2xl">
-        <span className="text-[11px] font-mono text-slate-400 font-semibold mr-1">Demo View:</span>
+      <div className="hidden lg:flex fixed top-3 right-4 z-[99] items-center gap-1.5 bg-white/90 backdrop-blur border border-slate-300 px-2.5 py-1.5 rounded-full shadow-lg">
+        <span className="text-[11px] font-mono text-slate-500 font-semibold mr-1">Demo View:</span>
         <button
           onClick={() => setIsPhoneMockup(true)}
           className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full font-bold transition-all touch-press ${
             isPhoneMockup
-              ? 'bg-rose-600 text-white shadow'
-              : 'text-slate-400 hover:text-white'
+              ? 'bg-red-600 text-white shadow'
+              : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           <Smartphone className="w-3.5 h-3.5" />
@@ -207,8 +207,8 @@ export default function App() {
           onClick={() => setIsPhoneMockup(false)}
           className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full font-bold transition-all touch-press ${
             !isPhoneMockup
-              ? 'bg-rose-600 text-white shadow'
-              : 'text-slate-400 hover:text-white'
+              ? 'bg-red-600 text-white shadow'
+              : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           <Monitor className="w-3.5 h-3.5" />
@@ -219,7 +219,7 @@ export default function App() {
       {/* Render simulated iPhone hardware frame for citizen/field ops, or full-width layout for admin command */}
       {isPhoneMockup && activeRole !== 'admin' ? (
         <div className="py-6 w-full flex items-center justify-center">
-          <div className="mobile-device-frame relative flex flex-col bg-[#070b14]">
+          <div className="mobile-device-frame relative flex flex-col bg-slate-50">
             <div className="mobile-notch">
               <div className="mobile-notch-camera" />
             </div>

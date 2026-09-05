@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle, MapPin, Users, BookOpen, Layers, Radio } from 'lucide-react';
+import { AlertCircle, MapPin, Users, BookOpen, Layers } from 'lucide-react';
 import { TRANSLATIONS } from '../data/translations';
 
 export default function MobileBottomNav({
@@ -13,7 +13,6 @@ export default function MobileBottomNav({
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.EN;
 
   const handleTabClick = (tabId) => {
-    // Mobile tactile haptic vibration
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate(25);
     }
@@ -26,7 +25,7 @@ export default function MobileBottomNav({
       label: t.tabSos || 'SOS',
       icon: AlertCircle,
       isPrimary: true,
-      color: 'rose'
+      color: 'red'
     },
     {
       id: 'shelters',
@@ -57,7 +56,7 @@ export default function MobileBottomNav({
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#090d16]/98 backdrop-blur-xl border-t border-slate-800/90 shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.7)] pb-safe select-none">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-[0_-5px_25px_rgba(0,0,0,0.08)] pb-safe select-none">
       <div className="max-w-md mx-auto px-2 py-1.5 flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -73,14 +72,14 @@ export default function MobileBottomNav({
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 ${
                     isActive
-                      ? 'bg-rose-600 text-white ring-4 ring-rose-500/40 shadow-rose-900/80 scale-105'
-                      : 'bg-gradient-to-tr from-rose-700 to-rose-500 text-white shadow-rose-950/60 group-hover:scale-105'
+                      ? 'bg-red-600 text-white ring-4 ring-red-200 shadow-red-500/40 scale-105'
+                      : 'bg-gradient-to-tr from-red-600 to-rose-500 text-white shadow-red-500/30 group-hover:scale-105'
                   }`}
                 >
                   <Icon className="w-6 h-6 animate-pulse" />
                 </div>
-                <span className={`text-[10px] font-bold mt-1 tracking-tight ${
-                  isActive ? 'text-rose-400' : 'text-slate-400'
+                <span className={`text-[10px] font-black mt-1 tracking-tight ${
+                  isActive ? 'text-red-600' : 'text-slate-600'
                 }`}>
                   {item.label}
                 </span>
@@ -104,12 +103,12 @@ export default function MobileBottomNav({
                 <Icon
                   className={`w-5 h-5 transition-colors duration-150 ${
                     isActive
-                      ? 'text-rose-400 stroke-[2.5]'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'text-red-600 stroke-[2.5]'
+                      : 'text-slate-500 hover:text-slate-800'
                   }`}
                 />
                 {item.badge && (
-                  <span className="absolute -top-1.5 -right-2 bg-rose-600 text-white font-extrabold text-[9px] w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-bounce">
+                  <span className="absolute -top-1.5 -right-2 bg-red-600 text-white font-black text-[9px] w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-bounce">
                     {item.badge}
                   </span>
                 )}
@@ -117,14 +116,14 @@ export default function MobileBottomNav({
               <span
                 className={`text-[10px] mt-0.5 tracking-tight transition-colors ${
                   isActive
-                    ? 'font-bold text-rose-400'
-                    : 'font-medium text-slate-400'
+                    ? 'font-black text-red-600'
+                    : 'font-semibold text-slate-500'
                 }`}
               >
                 {item.label}
               </span>
               {isActive && (
-                <div className="w-1.5 h-1.5 bg-rose-500 rounded-full mt-0.5" />
+                <div className="w-1.5 h-1.5 bg-red-600 rounded-full mt-0.5" />
               )}
             </button>
           );

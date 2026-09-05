@@ -90,6 +90,7 @@ button, a, input, select, textarea {
   overflow: hidden;
   position: relative;
   margin: 0 auto;
+  transform: translateZ(0);
 }
 
 /* Phone notch indicator */

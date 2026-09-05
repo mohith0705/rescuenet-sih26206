@@ -158,48 +158,62 @@ export default function CitizenPortal({
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-6 space-y-5">
-      {/* TAB 1: SOS & MAP (Single unified mobile stack, no sidebar clutter) */}
+      {/* TAB 1: SOS & MAP (Single unified mobile stack in Red & White Theme) */}
       {activeTab === 'sos' && (
         <div className="flex flex-col space-y-4">
-          {/* Quick SOS Trigger Hero Bar - Compact & Zero Clutter */}
-          <div className="bg-gradient-to-b from-[#181122] via-[#0f172a] to-[#090d16] p-4 rounded-2xl border border-rose-900/50 shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden">
-            {/* Background subtle radial glow */}
-            <div className="absolute inset-0 bg-rose-600/5 blur-2xl pointer-events-none" />
+          {/* Concentric Glowing Red & White SOS Hero Card */}
+          <div className="bg-white p-6 rounded-3xl border border-red-200 shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden">
+            {/* Outer Pulsing Aura Rings */}
+            <div className="absolute w-56 h-56 rounded-full bg-red-500/10 animate-ping pointer-events-none" />
+            <div className="absolute w-48 h-48 rounded-full bg-red-600/15 animate-pulse pointer-events-none" />
 
-            {/* Circular Mobile SOS Button */}
-            <div className="py-2">
+            {/* ULTRA-PREMIUM CONCENTRIC GLOWING SOS BUTTON */}
+            <div className="py-3 relative z-10">
               <button
                 onClick={handleInstantSosClick}
-                className="relative group w-36 h-36 rounded-full bg-gradient-to-tr from-rose-700 via-rose-600 to-amber-600 text-white flex flex-col items-center justify-center shadow-2xl shadow-rose-900/70 hover:scale-105 active:scale-95 transition-all touch-press"
+                className="relative group w-44 h-44 rounded-full bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white flex flex-col items-center justify-center shadow-[0_12px_30px_rgba(220,38,38,0.35)] hover:shadow-[0_18px_40px_rgba(220,38,38,0.5)] active:scale-95 transition-all ring-8 ring-red-100 border-4 border-white cursor-pointer overflow-hidden touch-press"
               >
-                <span className="absolute inset-0 rounded-full bg-rose-600 animate-ping opacity-30"></span>
-                <AlertOctagon className="w-12 h-12 mb-0.5" />
-                <span className="text-xl font-black tracking-wider leading-none">{t.sendSos || 'SEND SOS'}</span>
-                <span className="text-[9px] font-mono text-rose-100 uppercase mt-1 bg-rose-950/90 px-2 py-0.5 rounded-full border border-rose-400/40 font-bold">
-                  {t.instantGpsAlert || '1-Tap Broadcast'}
+                {/* Radial Top Gloss Highlight */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-white/35 via-transparent to-transparent pointer-events-none" />
+
+                {/* Center Animated Icon */}
+                <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur border border-white/40 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-md shrink-0">
+                  <AlertOctagon className="w-7 h-7 text-white drop-shadow" />
+                </div>
+
+                {/* Main Bold Text */}
+                <span className="text-2xl font-black tracking-widest text-white drop-shadow-md font-sans leading-tight">
+                  {t.sendSos || 'SEND SOS'}
+                </span>
+
+                {/* Micro Subtitle */}
+                <span className="mt-1 text-[9px] font-extrabold text-red-100 uppercase tracking-widest bg-red-950/40 px-2.5 py-0.5 rounded-full border border-white/20">
+                  1-Tap Dispatch
                 </span>
               </button>
             </div>
 
             {/* GPS lock pill & Emergency speed dials */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/70 border border-emerald-800/60 px-2.5 py-1 rounded-full flex items-center gap-1.5 font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <div className="relative z-10 flex flex-wrap items-center justify-center gap-2 mt-2">
+              <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full flex items-center gap-1.5 font-bold shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                 <span>GPS Locked: 17.695° N, 83.225° E</span>
               </span>
+
               <a
                 href="tel:1078"
-                className="text-[10px] font-mono text-rose-300 bg-rose-950/70 border border-rose-800/60 px-2.5 py-1 rounded-full flex items-center gap-1 font-bold hover:bg-rose-900/60 transition-all touch-press"
+                className="text-[11px] font-bold text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm transition-all touch-press"
               >
-                <Phone className="w-2.5 h-2.5 text-rose-400" />
-                <span>NDRF 1078</span>
+                <Phone className="w-3 h-3" />
+                <span>NDRF: 1078</span>
               </a>
+
               <a
                 href="tel:112"
-                className="text-[10px] font-mono text-slate-200 bg-slate-900/90 border border-slate-700 px-2.5 py-1 rounded-full flex items-center gap-1 font-bold hover:bg-slate-800 transition-all touch-press"
+                className="text-[11px] font-bold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm transition-all touch-press"
               >
-                <Phone className="w-2.5 h-2.5 text-slate-300" />
-                <span>112</span>
+                <Phone className="w-3 h-3 text-slate-600" />
+                <span>Police: 112</span>
               </a>
             </div>
           </div>
@@ -207,16 +221,16 @@ export default function CitizenPortal({
           {/* Full Width Live Disaster Map */}
           <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
-              <h3 className="text-xs font-bold text-white flex items-center gap-1.5 font-mono uppercase tracking-wide">
-                <MapPin className="w-3.5 h-3.5 text-rose-400" /> Live Coastal Sector Map
+              <h3 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5 font-mono uppercase tracking-wide">
+                <MapPin className="w-3.5 h-3.5 text-red-600" /> Multi-Disaster Live Map (Coastal Sector)
               </h3>
-              <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+              <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full font-mono font-bold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
                 Tracking Active
               </span>
             </div>
 
-            <div className="h-[360px] sm:h-[400px] rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
+            <div className="h-[360px] sm:h-[400px] rounded-2xl overflow-hidden border border-slate-200 shadow-md">
               <InteractiveMap 
                 sosList={sosRequests}
                 shelterList={shelters}

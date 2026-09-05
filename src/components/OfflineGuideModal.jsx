@@ -4,7 +4,7 @@ import {
   PhoneCall, Search, AlertTriangle, CheckCircle2, ChevronRight 
 } from 'lucide-react';
 
-export default function OfflineGuideModal({ onClose }) {
+export default function OfflineGuideModal() {
   const [activeCategory, setActiveCategory] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -68,8 +68,8 @@ export default function OfflineGuideModal({ onClose }) {
   ];
 
   const helplines = [
-    { name: 'National Emergency', number: '112', color: 'rose' },
-    { name: 'NDRF Disaster Control', number: '1078', color: 'blue' },
+    { name: 'National Emergency', number: '112', color: 'red' },
+    { name: 'NDRF Disaster Control', number: '1078', color: 'red' },
     { name: 'Medical / Ambulance', number: '108', color: 'emerald' },
     { name: 'State Disaster Helpline', number: '1070', color: 'amber' }
   ];
@@ -82,39 +82,39 @@ export default function OfflineGuideModal({ onClose }) {
   });
 
   return (
-    <div className="space-y-4 pb-20">
+    <div className="space-y-4 pb-12">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-emerald-950/70 via-slate-900 to-teal-950/70 border border-emerald-800/40 rounded-2xl p-4 shadow-lg">
+      <div className="bg-gradient-to-r from-red-50 via-white to-rose-50 border border-red-200 rounded-2xl p-4 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white shadow-md shadow-red-200 shrink-0">
             <BookOpen className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
+            <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
               Offline Survival Guide
-              <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-mono px-2 py-0.5 rounded-full border border-emerald-500/30">
+              <span className="text-[10px] bg-red-100 text-red-700 font-mono px-2 py-0.5 rounded-full border border-red-200 font-bold">
                 100% OFFLINE
               </span>
             </h2>
-            <p className="text-xs text-slate-400">
-              Essential life-saving protocols and first-aid available even without cellular network.
+            <p className="text-xs text-slate-600 font-medium">
+              Essential life-saving protocols and first-aid available without internet connection.
             </p>
           </div>
         </div>
 
         {/* Quick Dial Helplines Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 pt-3 border-t border-slate-800/80">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 pt-3 border-t border-slate-200">
           {helplines.map((item) => (
             <a
               key={item.number}
               href={`tel:${item.number}`}
-              className="flex items-center justify-between bg-slate-900/90 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl transition-all touch-press"
+              className="flex items-center justify-between bg-white hover:bg-red-50 border border-slate-200 hover:border-red-300 px-3 py-2 rounded-xl transition-all touch-press shadow-sm"
             >
               <div>
-                <p className="text-[10px] text-slate-400 font-medium truncate">{item.name}</p>
-                <p className="text-xs font-bold text-white font-mono">{item.number}</p>
+                <p className="text-[10px] text-slate-500 font-medium truncate">{item.name}</p>
+                <p className="text-xs font-black text-red-600 font-mono">{item.number}</p>
               </div>
-              <PhoneCall className="w-3.5 h-3.5 text-emerald-400 shrink-0 ml-1" />
+              <PhoneCall className="w-3.5 h-3.5 text-red-600 shrink-0 ml-1" />
             </a>
           ))}
         </div>
@@ -129,7 +129,7 @@ export default function OfflineGuideModal({ onClose }) {
             placeholder="Search symptoms, cyclone, drowning, burns..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-900/90 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+            className="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 shadow-sm font-medium"
           />
         </div>
 
@@ -138,10 +138,10 @@ export default function OfflineGuideModal({ onClose }) {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1 rounded-lg font-semibold shrink-0 transition-all touch-press ${
+              className={`px-3 py-1 rounded-lg font-bold shrink-0 transition-all touch-press ${
                 activeCategory === cat
-                  ? 'bg-emerald-600 text-white font-bold shadow-md shadow-emerald-950'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-red-600 text-white shadow-sm'
+                  : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
               }`}
             >
               {cat === 'ALL' ? 'All Protocols' : cat.replace('_', ' ')}
@@ -157,22 +157,22 @@ export default function OfflineGuideModal({ onClose }) {
           return (
             <div
               key={guide.id}
-              className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 shadow-md space-y-3"
+              className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3"
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-950/60 border border-emerald-800/40 flex items-center justify-center text-emerald-400 shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center text-red-600 shrink-0">
                   <Icon className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm font-bold text-white">{guide.title}</h3>
+                <h3 className="text-sm font-extrabold text-slate-900">{guide.title}</h3>
               </div>
 
               <div className="space-y-2">
                 {guide.steps.map((step, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                    <span className="w-4 h-4 rounded-full bg-emerald-900/40 text-emerald-400 font-mono text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                  <div key={idx} className="flex items-start gap-2 text-xs text-slate-700">
+                    <span className="w-4 h-4 rounded-full bg-red-100 text-red-700 font-mono text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-bold">
                       {idx + 1}
                     </span>
-                    <span>{step}</span>
+                    <span className="font-medium">{step}</span>
                   </div>
                 ))}
               </div>
