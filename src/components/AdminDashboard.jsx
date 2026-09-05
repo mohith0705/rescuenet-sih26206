@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Building2, Users, AlertTriangle, ShieldCheck, Send, Radio, 
-  PackageCheck, Truck, Droplets, Utensils, HeartPulse, Activity, Plus 
+  PackageCheck, Truck, Droplets, Utensils, HeartPulse, Activity, Plus, MapPin, Clock 
 } from 'lucide-react';
 
 export default function AdminDashboard({ 
@@ -59,11 +59,11 @@ export default function AdminDashboard({
 
         <div className="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-2">
           <div className="flex justify-between items-center text-xs text-slate-400">
-            <span>Unresolved SOS Distress Signals</span>
-            <AlertTriangle className="w-4 h-4 text-red-500" />
+            <span>Unresolved SOS Calls</span>
+            <AlertTriangle className="w-4 h-4 text-red-500 animate-pulse" />
           </div>
           <div className="text-2xl font-extrabold text-red-400 font-mono">
-            {activeSosCount} Active
+            {activeSosCount} Active Calls
           </div>
           <div className="text-[11px] text-slate-500 font-mono">
             {sosRequests.filter(s => s.urgency === 'CRITICAL').length} Critical Priority
@@ -94,6 +94,71 @@ export default function AdminDashboard({
           <div className="text-[11px] text-slate-500 font-mono">
             Last: {broadcasts[0]?.title || 'None'}
           </div>
+        </div>
+      </div>
+
+      {/* NEW: LIVE SOS INCIDENT COMMAND TABLE */}
+      <div className="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h3 className="font-bold text-white text-base flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-500 animate-pulse" /> Live Incoming SOS Distress Signals (Admin Monitor)
+            </h3>
+            <p className="text-xs text-slate-400">Real-time incoming distress tickets from citizen mobile devices</p>
+          </div>
+          <span className="text-xs bg-red-950 text-red-400 border border-red-800 px-3 py-1 rounded-full font-mono font-bold">
+            ● Live Stream Syncing
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-950 text-slate-400 font-mono uppercase text-[10px]">
+              <tr>
+                <th className="p-3">Ticket ID</th>
+                <th className="p-3">Urgency</th>
+                <th className="p-3">Citizen Name / Phone</th>
+                <th className="p-3">GPS Location</th>
+                <th className="p-3">Trapped Count</th>
+                <th className="p-3">Status</th>
+                <th className="p-3">Assigned Team</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800 text-slate-200">
+              {sosRequests.map(sos => (
+                <tr key={sos.id} className="hover:bg-slate-850/60 transition">
+                  <td className="p-3 font-mono font-bold text-red-400">#{sos.id}</td>
+                  <td className="p-3">
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded text-white ${
+                      sos.urgency === 'CRITICAL' ? 'bg-red-600' : (sos.urgency === 'HIGH' ? 'bg-amber-600' : 'bg-blue-600')
+                    }`}>
+                      {sos.urgency}
+                    </span>
+                  </td>
+                  <td className="p-3">
+                    <div className="font-bold text-white">{sos.name}</div>
+                    <div className="text-[11px] text-slate-400 font-mono">{sos.phone}</div>
+                  </td>
+                  <td className="p-3">
+                    <div className="flex items-center gap-1 text-slate-300 max-w-[200px] truncate">
+                      <MapPin className="w-3 h-3 text-red-400 shrink-0" /> {sos.location}
+                    </div>
+                  </td>
+                  <td className="p-3 font-mono font-bold text-amber-400">{sos.peopleCount} Persons</td>
+                  <td className="p-3">
+                    <span className={`font-mono font-semibold text-[11px] ${
+                      sos.status === 'PENDING' ? 'text-red-400' : (sos.status === 'DISPATCHED' ? 'text-blue-400' : 'text-emerald-400')
+                    }`}>
+                      ● {sos.status}
+                    </span>
+                  </td>
+                  <td className="p-3 font-mono text-slate-400">
+                    {sos.assignedTeam || 'Unassigned'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
