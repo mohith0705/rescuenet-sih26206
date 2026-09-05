@@ -24,6 +24,15 @@ export default {
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'Menlo', 'monospace']
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        }
+      },
+      animation: {
+        'marquee': 'marquee 25s linear infinite',
       }
     },
   },

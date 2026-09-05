@@ -7,35 +7,43 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount, curr
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
-      {/* High-Detection Emergency Red Ticker */}
-      <div className="bg-red-600 text-white text-xs px-4 py-2 flex items-center justify-between shadow-sm">
-        <div className="flex items-center gap-2 overflow-hidden font-medium">
+      {/* Sleek Emergency Red Ticker with Continuous Marquee Motion */}
+      <div className="bg-gradient-to-r from-red-700 via-red-600 to-rose-700 text-white text-xs px-4 py-2 flex items-center justify-between shadow-md relative overflow-hidden">
+        
+        {/* Fixed Alert Badge */}
+        <div className="flex items-center gap-2 z-10 shrink-0 bg-red-950/60 px-2.5 py-1 rounded-md border border-red-400/30 shadow-inner">
           <span className="flex h-2.5 w-2.5 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-90"></span>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
           </span>
-          <span className="font-extrabold uppercase tracking-wider text-[11px] bg-red-800 px-1.5 py-0.5 rounded">ALERT:</span>
-          <span className="truncate">{t.disasterAlert}</span>
+          <span className="font-extrabold uppercase tracking-wider text-[11px] text-white">ALERT:</span>
+        </div>
+
+        {/* Marquee Motion Scrolling Text */}
+        <div className="overflow-hidden whitespace-nowrap mx-4 flex-1 relative flex items-center">
+          <div className="animate-marquee inline-block font-semibold tracking-wide text-red-50 text-[12px]">
+            🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert}
+          </div>
         </div>
 
         {/* Language Switcher Dropdown */}
-        <div className="flex items-center gap-2 shrink-0 ml-2">
-          <div className="flex items-center gap-1 bg-red-700 border border-red-500 px-2.5 py-1 rounded-md text-[11px] text-white font-bold">
+        <div className="flex items-center gap-2 shrink-0 z-10">
+          <div className="flex items-center gap-1 bg-red-950/60 border border-red-400/40 px-2.5 py-1 rounded-md text-[11px] text-white font-bold shadow-sm hover:border-white transition">
             <Languages className="w-3.5 h-3.5" />
             <select
               value={currentLang}
               onChange={(e) => setCurrentLang(e.target.value)}
               className="bg-transparent text-white focus:outline-none cursor-pointer font-bold"
             >
-              <option value="EN" className="bg-white text-slate-900">🇬🇧 English</option>
-              <option value="HI" className="bg-white text-slate-900">🇮🇳 हिंदी</option>
-              <option value="TE" className="bg-white text-slate-900">🇮🇳 తెలుగు</option>
-              <option value="TA" className="bg-white text-slate-900">🇮🇳 தமிழ்</option>
-              <option value="BN" className="bg-white text-slate-900">🇮🇳 বাংলা</option>
+              <option value="EN" className="bg-slate-900 text-white">🇬🇧 English</option>
+              <option value="HI" className="bg-slate-900 text-white">🇮🇳 हिंदी</option>
+              <option value="TE" className="bg-slate-900 text-white">🇮🇳 తెలుగు</option>
+              <option value="TA" className="bg-slate-900 text-white">🇮🇳 தமிழ்</option>
+              <option value="BN" className="bg-slate-900 text-white">🇮🇳 বাংলা</option>
             </select>
           </div>
 
-          <div className="hidden md:flex items-center gap-3 text-red-100 text-[11px] font-mono pl-3 border-l border-red-500 font-bold">
+          <div className="hidden md:flex items-center gap-3 text-red-100 text-[11px] font-mono pl-3 border-l border-red-500/50 font-bold">
             <span>NDRF: 1078</span>
             <span>Helpline: 1070</span>
           </div>
