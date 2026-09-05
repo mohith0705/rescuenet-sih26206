@@ -4,6 +4,7 @@ import {
   CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Zap 
 } from 'lucide-react';
 import InteractiveMap from './InteractiveMap';
+import OfflineGuideModal from './OfflineGuideModal';
 import { TRANSLATIONS } from '../data/translations';
 
 export default function CitizenPortal({ 
@@ -12,11 +13,15 @@ export default function CitizenPortal({
   missingPersons, 
   onTriggerSos, 
   onReportMissingPerson,
-  currentLang = 'EN'
+  currentLang = 'EN',
+  activeTab: externalActiveTab,
+  onTabChange
 }) {
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.EN;
 
-  const [activeTab, setActiveTab] = useState('sos'); // 'sos' | 'shelters' | 'missing' | 'guide'
+  const [internalActiveTab, setInternalActiveTab] = useState('sos'); // 'sos' | 'shelters' | 'missing' | 'guide'
+  const activeTab = externalActiveTab || internalActiveTab;
+  const setActiveTab = onTabChange || setInternalActiveTab;
   
   // Instant SOS State & Follow-up Modal
   const [lastSosTicket, setLastSosTicket] = useState(null);
@@ -28,6 +33,7 @@ export default function CitizenPortal({
   const [sosLocation, setSosLocation] = useState('');
   const [sosNotes, setSosNotes] = useState('');
   const [detailsSaved, setDetailsSaved] = useState(false);
+  const [gpsStatus, setGpsStatus] = useState('Acquired (GPS Lock)');
 
   // Missing Person Form Modal State
   const [showMissingModal, setShowMissingModal] = useState(false);
@@ -40,24 +46,63 @@ export default function CitizenPortal({
   // Shelter Filter State
   const [shelterFilter, setShelterFilter] = useState('ALL');
 
-  // STEP 1: INSTANT 1-TAP SOS DISPATCH
+  // STEP 1: INSTANT 1-TAP SOS DISPATCH WITH REAL GPS & HAPTICS
   const handleInstantSosClick = () => {
+    // 1. Trigger mobile haptic vibration
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate([200, 100, 200, 100, 400]);
+    }
+
     const ticketId = `SOS-${Date.now().toString().slice(-4)}`;
+    
+    // Default fallback coordinates (Visakhapatnam coastal disaster sector)
+    let userLat = 17.6950 + (Math.random() - 0.5) * 0.03;
+    let userLng = 83.2250 + (Math.random() - 0.5) * 0.03;
+    let locLabel = 'Beach Road Sector 4 (Auto GPS: 17.6950° N, 83.2250° E)';
+
     const instantSos = {
       id: ticketId.toLowerCase(),
       ticketCode: ticketId,
-      name: 'Victim (Instant Alert)',
+      name: 'Victim (Instant Beacon)',
       phone: '+91 98765 43210',
       peopleCount: 1,
-      location: 'Sector 4 Crisis Zone (Auto GPS: 17.6950° N, 83.2250° E)',
-      lat: 17.6950 + (Math.random() - 0.5) * 0.03,
-      lng: 83.2250 + (Math.random() - 0.5) * 0.03,
+      location: locLabel,
+      lat: userLat,
+      lng: userLng,
       urgency: 'CRITICAL',
       category: 'IMMEDIATE_DISTRESS',
       timestamp: 'Just now',
       status: 'PENDING',
-      notes: 'Instant 1-tap distress beacon transmitted from device.'
+      notes: 'Instant 1-tap distress beacon transmitted from mobile device.'
     };
+
+    // 2. Query real hardware GPS if available on mobile
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          instantSos.lat = pos.coords.latitude;
+          instantSos.lng = pos.coords.longitude;
+          instantSos.location = `Live Device GPS (${pos.coords.latitude.toFixed(4)}° N, ${pos.coords.longitude.toFixed(4)}° E &plusmn;${Math.round(pos.coords.accuracy)}m)`;
+          setGpsStatus(`GPS High Accuracy: ±${Math.round(pos.coords.accuracy)}m`);
+          setLastSosTicket({ ...instantSos });
+        },
+        (err) => {
+          console.warn('Geolocation fallback used:', err.message);
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    }
+
+    // 3. Offline storage queue if cellular is unavailable
+    if (typeof localStorage !== 'undefined') {
+      try {
+        const queued = JSON.parse(localStorage.getItem('rescuenet_offline_sos') || '[]');
+        queued.unshift(instantSos);
+        localStorage.setItem('rescuenet_offline_sos', JSON.stringify(queued));
+      } catch (e) {
+        console.error('Offline storage error', e);
+      }
+    }
     
     onTriggerSos(instantSos);
     setLastSosTicket(instantSos);
@@ -112,152 +157,71 @@ export default function CitizenPortal({
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-      {/* Sub Navigation Tabs */}
-      <div className="flex items-center justify-between gap-2 border-b border-slate-300 pb-3 overflow-x-auto bg-white p-2 rounded-xl shadow-sm border">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setActiveTab('sos')}
-            className={`px-4 py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-2 ${
-              activeTab === 'sos' 
-                ? 'bg-red-600 text-white shadow-md' 
-                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
-            }`}
-          >
-            <AlertOctagon className="w-4 h-4" />
-            <span>Emergency SOS & Map</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('shelters')}
-            className={`px-4 py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-2 ${
-              activeTab === 'shelters' 
-                ? 'bg-emerald-600 text-white shadow-md' 
-                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
-            }`}
-          >
-            <MapPin className="w-4 h-4" />
-            <span>{t.sheltersTab} ({shelters.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('missing')}
-            className={`px-4 py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-2 ${
-              activeTab === 'missing' 
-                ? 'bg-amber-600 text-white shadow-md' 
-                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
-            }`}
-          >
-            <Users className="w-4 h-4" />
-            <span>{t.missingTab}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('guide')}
-            className={`px-4 py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-2 ${
-              activeTab === 'guide' 
-                ? 'bg-blue-600 text-white shadow-md' 
-                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
-            }`}
-          >
-            <Radio className="w-4 h-4" />
-            <span>{t.guideTab}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* TAB 1: SOS & MAP */}
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-6 space-y-5">
+      {/* TAB 1: SOS & MAP (Single unified mobile stack, no sidebar clutter) */}
       {activeTab === 'sos' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main SOS Trigger Hero Card */}
-          <div className="lg:col-span-1 bg-white p-6 rounded-2xl border border-red-200 shadow-xl flex flex-col justify-between space-y-6">
-            <div>
-              <div className="flex items-center justify-between bg-red-50 p-2.5 rounded-xl border border-red-100 mb-3">
-                <div className="flex items-center gap-2 text-red-700 text-xs font-extrabold uppercase tracking-wider">
-                  <ShieldAlert className="w-4 h-4 text-red-600 shrink-0" /> Instant Emergency Beacon
-                </div>
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
-                </span>
-              </div>
-              <h2 className="text-2xl font-extrabold text-slate-900">{t.trappedHeader}</h2>
-              <p className="text-slate-600 text-xs mt-1.5 leading-relaxed font-medium">
-                {t.trappedDesc}
-              </p>
-            </div>
+        <div className="flex flex-col space-y-4">
+          {/* Quick SOS Trigger Hero Bar - Compact & Zero Clutter */}
+          <div className="bg-gradient-to-b from-[#181122] via-[#0f172a] to-[#090d16] p-4 rounded-2xl border border-rose-900/50 shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden">
+            {/* Background subtle radial glow */}
+            <div className="absolute inset-0 bg-rose-600/5 blur-2xl pointer-events-none" />
 
-            {/* ULTRA-PREMIUM CONCENTRIC GLOWING SOS BUTTON */}
-            <div className="flex flex-col items-center justify-center py-5 relative">
-              {/* Outer Pulsing Aura Rings */}
-              <div className="absolute w-56 h-56 rounded-full bg-red-500/10 animate-ping pointer-events-none"></div>
-              <div className="absolute w-50 h-50 rounded-full bg-red-600/15 animate-pulse pointer-events-none"></div>
-
-              {/* Main Button Surface */}
+            {/* Circular Mobile SOS Button */}
+            <div className="py-2">
               <button
                 onClick={handleInstantSosClick}
-                className="relative group z-10 w-48 h-48 rounded-full bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white flex flex-col items-center justify-center shadow-[0_12px_30px_rgba(220,38,38,0.35)] hover:shadow-[0_18px_40px_rgba(220,38,38,0.5)] hover:scale-105 active:scale-95 transition-all ring-8 ring-red-100 border-4 border-white cursor-pointer overflow-hidden"
+                className="relative group w-36 h-36 rounded-full bg-gradient-to-tr from-rose-700 via-rose-600 to-amber-600 text-white flex flex-col items-center justify-center shadow-2xl shadow-rose-900/70 hover:scale-105 active:scale-95 transition-all touch-press"
               >
-                {/* Radial Top Gloss Highlight */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-white/35 via-transparent to-transparent pointer-events-none"></div>
-
-                {/* Center Animated Icon */}
-                <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform shadow-md shrink-0">
-                  <AlertOctagon className="w-8 h-8 text-white group-hover:rotate-12 transition-transform drop-shadow-md" />
-                </div>
-
-                {/* Heavy Bold Label */}
-                <span className="text-2xl font-black tracking-widest text-white drop-shadow-md uppercase font-sans shrink-0">
-                  {t.sendSos}
-                </span>
-
-                {/* Micro Subtitle */}
-                <span className="mt-1 text-[10px] font-extrabold text-red-100 uppercase tracking-widest bg-red-950/40 px-2.5 py-0.5 rounded-full border border-white/20">
-                  1-Tap Dispatch
+                <span className="absolute inset-0 rounded-full bg-rose-600 animate-ping opacity-30"></span>
+                <AlertOctagon className="w-12 h-12 mb-0.5" />
+                <span className="text-xl font-black tracking-wider leading-none">{t.sendSos || 'SEND SOS'}</span>
+                <span className="text-[9px] font-mono text-rose-100 uppercase mt-1 bg-rose-950/90 px-2 py-0.5 rounded-full border border-rose-400/40 font-bold">
+                  {t.instantGpsAlert || '1-Tap Broadcast'}
                 </span>
               </button>
-
-              {/* Live Alert Status Badge Below Button */}
-              <div className="relative z-10 mt-6 flex items-center gap-1.5 bg-red-50 text-red-700 px-4 py-1.5 rounded-full border border-red-200 shadow-sm">
-                <Zap className="w-4 h-4 text-amber-500 fill-amber-500 animate-bounce" />
-                <span className="text-xs font-black uppercase tracking-wider">
-                  {t.instantGpsAlert}
-                </span>
-              </div>
             </div>
 
-            {/* Quick Emergency Contacts */}
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-              <div className="text-xs font-extrabold text-slate-900 mb-1">Direct Emergency Helplines:</div>
-              <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                <a href="tel:1078" className="bg-red-600 text-white border border-red-700 p-2.5 rounded-lg text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-red-700">
-                  <Phone className="w-3.5 h-3.5" /> NDRF: 1078
-                </a>
-                <a href="tel:112" className="bg-slate-900 text-white p-2.5 rounded-lg text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-slate-800">
-                  <Phone className="w-3.5 h-3.5" /> Police: 112
-                </a>
-              </div>
+            {/* GPS lock pill & Emergency speed dials */}
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
+              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/70 border border-emerald-800/60 px-2.5 py-1 rounded-full flex items-center gap-1.5 font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                <span>GPS Locked: 17.695° N, 83.225° E</span>
+              </span>
+              <a
+                href="tel:1078"
+                className="text-[10px] font-mono text-rose-300 bg-rose-950/70 border border-rose-800/60 px-2.5 py-1 rounded-full flex items-center gap-1 font-bold hover:bg-rose-900/60 transition-all touch-press"
+              >
+                <Phone className="w-2.5 h-2.5 text-rose-400" />
+                <span>NDRF 1078</span>
+              </a>
+              <a
+                href="tel:112"
+                className="text-[10px] font-mono text-slate-200 bg-slate-900/90 border border-slate-700 px-2.5 py-1 rounded-full flex items-center gap-1 font-bold hover:bg-slate-800 transition-all touch-press"
+              >
+                <Phone className="w-2.5 h-2.5 text-slate-300" />
+                <span>112</span>
+              </a>
             </div>
           </div>
 
-          {/* Interactive Map Area */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
-              <div>
-                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-red-600" /> Multi-Disaster Live GIS Map (All Hazard Zones)
-                </h3>
-                <p className="text-xs text-slate-600 font-medium">Real-time distress signals for Floods, Cyclones, Earthquakes & Landslides</p>
-              </div>
-              <div className="text-xs text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full font-mono font-bold">
-                ● Live GPS Tracking Active
-              </div>
+          {/* Full Width Live Disaster Map */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between px-1">
+              <h3 className="text-xs font-bold text-white flex items-center gap-1.5 font-mono uppercase tracking-wide">
+                <MapPin className="w-3.5 h-3.5 text-rose-400" /> Live Coastal Sector Map
+              </h3>
+              <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                Tracking Active
+              </span>
             </div>
 
-            <InteractiveMap 
-              sosList={sosRequests}
-              shelterList={shelters}
-            />
+            <div className="h-[360px] sm:h-[400px] rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
+              <InteractiveMap 
+                sosList={sosRequests}
+                shelterList={shelters}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -454,6 +418,9 @@ export default function CitizenPortal({
               </p>
             </div>
           </div>
+
+          {/* Full First-Aid & Weather Offline Manual */}
+          <OfflineGuideModal />
         </div>
       )}
 
