@@ -13,6 +13,8 @@ import {
 
 export default function App() {
   const [activeRole, setActiveRole] = useState('citizen'); // 'citizen' | 'rescue' | 'admin'
+  const [currentLang, setCurrentLang] = useState('EN'); // 'EN' | 'HI' | 'TE' | 'TA' | 'BN'
+
   const [shelters, setShelters] = useState(INITIAL_SHELTERS);
   const [sosRequests, setSosRequests] = useState(INITIAL_SOS_REQUESTS);
   const [rescueTeams, setRescueTeams] = useState(INITIAL_RESCUE_TEAMS);
@@ -70,11 +72,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Top Header Navbar */}
+      {/* Top Header Navbar with Language Switcher */}
       <Navbar 
         activeRole={activeRole} 
         setActiveRole={setActiveRole} 
         activeSosCount={activeSosCount}
+        currentLang={currentLang}
+        setCurrentLang={setCurrentLang}
       />
 
       {/* Main Content Area */}
@@ -86,6 +90,7 @@ export default function App() {
             missingPersons={missingPersons}
             onTriggerSos={handleTriggerSos}
             onReportMissingPerson={handleReportMissingPerson}
+            currentLang={currentLang}
           />
         )}
 

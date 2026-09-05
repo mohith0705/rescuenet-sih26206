@@ -1,7 +1,10 @@
 import React from 'react';
-import { ShieldAlert, Users, Radio, PhoneCall, AlertCircle, HeartHandshake } from 'lucide-react';
+import { ShieldAlert, Users, Radio, HeartHandshake, Languages } from 'lucide-react';
+import { TRANSLATIONS } from '../data/translations';
 
-export default function Navbar({ activeRole, setActiveRole, activeSosCount }) {
+export default function Navbar({ activeRole, setActiveRole, activeSosCount, currentLang, setCurrentLang }) {
+  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.EN;
+
   return (
     <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 shadow-lg">
       {/* Emergency Ticker */}
@@ -11,20 +14,35 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount }) {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
           </span>
-          <span className="font-bold text-red-400 uppercase tracking-wider">Disaster Alert:</span>
-          <span className="truncate">Cyclone Warning Active - Heavy Rainfall & Coastal Surge expected in Sector 1-5. Stay in designated shelters.</span>
+          <span className="font-bold text-red-400 uppercase tracking-wider">Alert:</span>
+          <span className="truncate">{t.disasterAlert}</span>
         </div>
-        <div className="hidden md:flex items-center gap-4 text-slate-300">
-          <span className="flex items-center gap-1 font-mono text-[11px]">
-            <span className="text-slate-500">NDRF Control:</span> 1078
-          </span>
-          <span className="flex items-center gap-1 font-mono text-[11px]">
-            <span className="text-slate-500">State Helpline:</span> 1070
-          </span>
+
+        {/* Language Switcher Dropdown */}
+        <div className="flex items-center gap-2 shrink-0 ml-2">
+          <div className="flex items-center gap-1 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded text-[11px] text-amber-400 font-bold">
+            <Languages className="w-3.5 h-3.5" />
+            <select
+              value={currentLang}
+              onChange={(e) => setCurrentLang(e.target.value)}
+              className="bg-transparent text-white focus:outline-none cursor-pointer font-bold"
+            >
+              <option value="EN" className="bg-slate-900 text-white">🇬🇧 English</option>
+              <option value="HI" className="bg-slate-900 text-white">🇮🇳 हिंदी</option>
+              <option value="TE" className="bg-slate-900 text-white">🇮🇳 తెలుగు</option>
+              <option value="TA" className="bg-slate-900 text-white">🇮🇳 தமிழ்</option>
+              <option value="BN" className="bg-slate-900 text-white">🇮🇳 বাংলা</option>
+            </select>
+          </div>
+
+          <div className="hidden md:flex items-center gap-3 text-slate-300 text-[11px] font-mono pl-2 border-l border-slate-800">
+            <span>NDRF: 1078</span>
+            <span>Helpline: 1070</span>
+          </div>
         </div>
       </div>
 
-      {/* Main Header */}
+      {/* Main Header Navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <div className="flex items-center gap-3">
@@ -53,7 +71,7 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount }) {
             }`}
           >
             <HeartHandshake className="w-4 h-4" />
-            <span>Citizen / Victim</span>
+            <span>{t.citizenPortal}</span>
           </button>
 
           <button
@@ -65,7 +83,7 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount }) {
             }`}
           >
             <Radio className="w-4 h-4" />
-            <span>Rescue Units</span>
+            <span>{t.rescueUnits}</span>
             {activeSosCount > 0 && (
               <span className="bg-red-500 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full animate-pulse">
                 {activeSosCount}
@@ -82,7 +100,7 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount }) {
             }`}
           >
             <Users className="w-4 h-4" />
-            <span>Admin Command</span>
+            <span>{t.adminCommand}</span>
           </button>
         </nav>
       </div>

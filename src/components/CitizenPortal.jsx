@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import { 
   AlertOctagon, Phone, MapPin, Users, HeartPulse, Search, Plus, 
-  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, FastForward 
+  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload 
 } from 'lucide-react';
 import InteractiveMap from './InteractiveMap';
+import { TRANSLATIONS } from '../data/translations';
 
 export default function CitizenPortal({ 
   shelters, 
   sosRequests, 
   missingPersons, 
   onTriggerSos, 
-  onReportMissingPerson 
+  onReportMissingPerson,
+  currentLang = 'EN'
 }) {
+  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.EN;
+
   const [activeTab, setActiveTab] = useState('sos'); // 'sos' | 'shelters' | 'missing' | 'guide'
   
   // Instant SOS State & Follow-up Modal
@@ -43,7 +47,7 @@ export default function CitizenPortal({
       id: ticketId.toLowerCase(),
       ticketCode: ticketId,
       name: 'Victim (Instant Alert)',
-      phone: '+91 98765 43210 (Auto-detected)',
+      phone: '+91 98765 43210',
       peopleCount: 1,
       location: 'Beach Road Sector 4 (Auto GPS: 17.6950° N, 83.2250° E)',
       lat: 17.6950 + (Math.random() - 0.5) * 0.03,
@@ -55,14 +59,12 @@ export default function CitizenPortal({
       notes: 'Instant 1-tap distress beacon transmitted from device.'
     };
     
-    // Dispatch immediately to Admin & NDRF without waiting!
     onTriggerSos(instantSos);
     setLastSosTicket(instantSos);
     setDetailsSaved(false);
     setShowFollowupModal(true);
   };
 
-  // STEP 2: OPTIONAL DETAILS UPDATE
   const handleSaveAdditionalDetails = (e) => {
     e.preventDefault();
     if (lastSosTicket) {
@@ -135,7 +137,7 @@ export default function CitizenPortal({
             }`}
           >
             <MapPin className="w-4 h-4 text-emerald-400" />
-            <span>Relief Shelters ({shelters.length})</span>
+            <span>{t.sheltersTab} ({shelters.length})</span>
           </button>
 
           <button
@@ -147,7 +149,7 @@ export default function CitizenPortal({
             }`}
           >
             <Users className="w-4 h-4 text-amber-400" />
-            <span>Missing Persons Registry</span>
+            <span>{t.missingTab}</span>
           </button>
 
           <button
@@ -159,7 +161,7 @@ export default function CitizenPortal({
             }`}
           >
             <Radio className="w-4 h-4 text-blue-400" />
-            <span>Offline Survival Guide</span>
+            <span>{t.guideTab}</span>
           </button>
         </div>
       </div>
@@ -171,11 +173,11 @@ export default function CitizenPortal({
           <div className="lg:col-span-1 bg-gradient-to-b from-red-950/70 via-slate-900 to-slate-900 p-6 rounded-2xl border border-red-900/40 shadow-2xl flex flex-col justify-between space-y-6">
             <div>
               <div className="flex items-center gap-2 text-red-400 text-xs font-bold uppercase tracking-wider mb-2">
-                <ShieldAlert className="w-4 h-4" /> Instant 1-Tap Emergency Beacon
+                <ShieldAlert className="w-4 h-4" /> Instant Emergency Beacon
               </div>
-              <h2 className="text-2xl font-extrabold text-white">In Danger? Tap SOS Now!</h2>
+              <h2 className="text-2xl font-extrabold text-white">{t.trappedHeader}</h2>
               <p className="text-slate-300 text-xs mt-1 leading-relaxed">
-                <strong className="text-red-400">Zero form filling required.</strong> Pressing the red button instantly transmits your GPS location and emergency signal directly to NDRF rescue boats & admin command center in <span className="underline">0.1 seconds</span>.
+                {t.trappedDesc}
               </p>
             </div>
 
@@ -187,9 +189,9 @@ export default function CitizenPortal({
               >
                 <span className="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-40"></span>
                 <AlertOctagon className="w-16 h-16 mb-1 group-hover:rotate-12 transition-transform" />
-                <span className="text-2xl font-black tracking-wider">SEND SOS</span>
+                <span className="text-2xl font-black tracking-wider">{t.sendSos}</span>
                 <span className="text-[10px] font-mono text-red-100 uppercase mt-0.5 bg-red-950/60 px-2 py-0.5 rounded-full border border-red-400/30">
-                  Instant GPS Alert
+                  {t.instantGpsAlert}
                 </span>
               </button>
             </div>
@@ -235,7 +237,7 @@ export default function CitizenPortal({
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800">
             <div>
-              <h2 className="text-lg font-bold text-white">Open Relief Camps & Shelters</h2>
+              <h2 className="text-lg font-bold text-white">{t.openCamps}</h2>
               <p className="text-xs text-slate-400">Locate safe zones, food distribution centers, and medical stations</p>
             </div>
             
@@ -298,15 +300,15 @@ export default function CitizenPortal({
                   {/* Supply Status */}
                   <div className="grid grid-cols-3 gap-2 text-center text-xs">
                     <div className="bg-slate-950 p-2 rounded border border-slate-800">
-                      <div className="text-[10px] text-slate-500">Food Rations</div>
+                      <div className="text-[10px] text-slate-500">{t.foodRations}</div>
                       <div className="font-mono font-bold text-slate-200">{s.foodSupplyDays} Days</div>
                     </div>
                     <div className="bg-slate-950 p-2 rounded border border-slate-800">
-                      <div className="text-[10px] text-slate-500">Water Tanker</div>
+                      <div className="text-[10px] text-slate-500">{t.waterTankers}</div>
                       <div className="font-mono font-bold text-slate-200">{s.waterLiters}L</div>
                     </div>
                     <div className="bg-slate-950 p-2 rounded border border-slate-800">
-                      <div className="text-[10px] text-slate-500">Medical Doctor</div>
+                      <div className="text-[10px] text-slate-500">{t.doctorPresent}</div>
                       <div className={`font-mono font-bold ${s.medicalDoctorPresent ? 'text-emerald-400' : 'text-amber-400'}`}>
                         {s.medicalDoctorPresent ? 'Present' : 'On Call'}
                       </div>
@@ -317,7 +319,7 @@ export default function CitizenPortal({
                     href={`tel:${s.contact}`}
                     className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-2 transition"
                   >
-                    <Phone className="w-3.5 h-3.5" /> Call Shelter Helpline ({s.contact})
+                    <Phone className="w-3.5 h-3.5" /> {t.callHelpline} ({s.contact})
                   </a>
                 </div>
               );
@@ -331,7 +333,7 @@ export default function CitizenPortal({
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800">
             <div>
-              <h2 className="text-lg font-bold text-white">Missing Persons Registry & Search</h2>
+              <h2 className="text-lg font-bold text-white">{t.missingTab}</h2>
               <p className="text-xs text-slate-400">Search missing loved ones or register a report for emergency rescue matching</p>
             </div>
 
@@ -392,7 +394,7 @@ export default function CitizenPortal({
         <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-6">
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Radio className="w-5 h-5 text-blue-400" /> Offline & Low-Bandwidth Survival Instructions
+              <Radio className="w-5 h-5 text-blue-400" /> {t.guideTab}
             </h2>
             <p className="text-xs text-slate-400 mt-1">What to do when cellular networks and internet disconnect during cyclones or floods</p>
           </div>
@@ -432,7 +434,7 @@ export default function CitizenPortal({
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
                 <CheckCircle className="w-5 h-5 text-emerald-500 animate-bounce" />
-                <span>EMERGENCY SOS SENT SUCCESSFULLY!</span>
+                <span>{t.sosSentTitle}</span>
               </div>
               <button 
                 type="button" 
@@ -450,7 +452,7 @@ export default function CitizenPortal({
                 <span className="text-[10px] bg-red-600 text-white font-bold px-2 py-0.5 rounded">CRITICAL SOS LIVE</span>
               </div>
               <p className="text-xs text-slate-200 leading-relaxed">
-                Your GPS coordinates <span className="font-mono text-emerald-400 font-bold">17.6950° N, 83.2250° E</span> have been transmitted directly to NDRF Command and nearby rescue boats.
+                {t.sosSentDesc}
               </p>
             </div>
 
@@ -459,7 +461,7 @@ export default function CitizenPortal({
               <form onSubmit={handleSaveAdditionalDetails} className="space-y-4 pt-1">
                 <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center gap-2 text-xs text-slate-300">
                   <Info className="w-4 h-4 text-blue-400 shrink-0" />
-                  <span><strong>Optional:</strong> If safe to do so, add extra details to help rescue workers prepare.</span>
+                  <span>{t.optionalFormNote}</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-xs">
@@ -528,13 +530,13 @@ export default function CitizenPortal({
                     onClick={() => setShowFollowupModal(false)}
                     className="text-xs text-slate-400 hover:text-white px-3 py-2"
                   >
-                    Skip (SOS Already Sent)
+                    {t.skipSos}
                   </button>
                   <button
                     type="submit"
                     className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2 rounded-lg shadow-md transition"
                   >
-                    Update SOS Details
+                    {t.updateDetails}
                   </button>
                 </div>
               </form>
