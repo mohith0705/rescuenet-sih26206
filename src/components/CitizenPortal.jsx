@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   AlertOctagon, Phone, MapPin, Users, HeartPulse, Search, Plus, 
-  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload 
+  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Zap 
 } from 'lucide-react';
 import InteractiveMap from './InteractiveMap';
 import { TRANSLATIONS } from '../data/translations';
@@ -172,8 +172,14 @@ export default function CitizenPortal({
           {/* Main SOS Trigger Hero Card */}
           <div className="lg:col-span-1 bg-white p-6 rounded-2xl border border-red-200 shadow-xl flex flex-col justify-between space-y-6">
             <div>
-              <div className="flex items-center gap-2 text-red-700 text-xs font-extrabold uppercase tracking-wider mb-2 bg-red-50 p-2 rounded-lg border border-red-100">
-                <ShieldAlert className="w-4 h-4 text-red-600 shrink-0" /> Instant Emergency Beacon
+              <div className="flex items-center justify-between bg-red-50 p-2.5 rounded-xl border border-red-100 mb-3">
+                <div className="flex items-center gap-2 text-red-700 text-xs font-extrabold uppercase tracking-wider">
+                  <ShieldAlert className="w-4 h-4 text-red-600 shrink-0" /> Instant Emergency Beacon
+                </div>
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                </span>
               </div>
               <h2 className="text-2xl font-extrabold text-slate-900">{t.trappedHeader}</h2>
               <p className="text-slate-600 text-xs mt-1.5 leading-relaxed font-medium">
@@ -181,18 +187,35 @@ export default function CitizenPortal({
               </p>
             </div>
 
-            {/* ULTRA-DETECTABLE BRIGHT RED SOS BUTTON */}
-            <div className="flex flex-col items-center justify-center py-4">
+            {/* ULTRA-PREMIUM CONCENTRIC GLOWING SOS BUTTON */}
+            <div className="flex flex-col items-center justify-center py-6 relative">
+              {/* Outer Pulsing Aura Rings */}
+              <div className="absolute w-56 h-56 rounded-full bg-red-500/20 animate-ping"></div>
+              <div className="absolute w-48 h-48 rounded-full bg-red-600/20 animate-pulse"></div>
+
+              {/* Main Button Surface */}
               <button
                 onClick={handleInstantSosClick}
-                className="relative group w-48 h-48 rounded-full bg-red-600 hover:bg-red-700 text-white flex flex-col items-center justify-center shadow-2xl shadow-red-500/50 hover:scale-105 active:scale-95 transition-all ring-8 ring-red-100"
+                className="relative group w-44 h-44 rounded-full bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white flex flex-col items-center justify-center shadow-2xl shadow-red-600/60 hover:scale-105 active:scale-95 transition-all ring-4 ring-white border-4 border-red-400/40"
               >
-                <span className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-40"></span>
-                <AlertOctagon className="w-18 h-18 mb-1 group-hover:rotate-12 transition-transform text-white" />
-                <span className="text-3xl font-black tracking-widest text-white drop-shadow-md">{t.sendSos}</span>
-                <span className="text-[10px] font-mono text-white uppercase mt-1 bg-red-800 px-3 py-0.5 rounded-full font-bold shadow-inner">
-                  {t.instantGpsAlert}
-                </span>
+                {/* Glossy Top Highlight Arc */}
+                <div className="absolute top-2 w-32 h-14 rounded-t-full bg-white/20 blur-[1px]"></div>
+
+                {/* Center Animated Icon */}
+                <div className="w-14 h-14 rounded-2xl bg-red-900/40 border border-white/30 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-inner">
+                  <AlertOctagon className="w-8 h-8 text-white group-hover:rotate-12 transition-transform drop-shadow" />
+                </div>
+
+                {/* Heavy Bold Label */}
+                <span className="text-2xl font-black tracking-widest text-white drop-shadow-md font-mono">{t.sendSos}</span>
+
+                {/* Subtitle Badge Pill */}
+                <div className="mt-1 flex items-center gap-1 bg-red-950/80 px-3 py-0.5 rounded-full border border-red-300/40 shadow-inner">
+                  <Zap className="w-3 h-3 text-amber-400 fill-amber-400 animate-bounce" />
+                  <span className="text-[9px] font-mono text-white font-extrabold uppercase tracking-wide">
+                    {t.instantGpsAlert}
+                  </span>
+                </div>
               </button>
             </div>
 
@@ -427,9 +450,9 @@ export default function CitizenPortal({
         </div>
       )}
 
-      {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL WITH ALL 7 DISASTER TYPES */}
+      {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL (HIGH Z-INDEX Z-[9999]) */}
       {showFollowupModal && lastSosTicket && (
-        <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-red-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
@@ -456,7 +479,7 @@ export default function CitizenPortal({
               </p>
             </div>
 
-            {/* Optional Additional Details Form with ALL 7 Disaster Types */}
+            {/* Optional Additional Details Form */}
             {!detailsSaved ? (
               <form onSubmit={handleSaveAdditionalDetails} className="space-y-4 pt-1">
                 <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 flex items-center gap-2 text-xs text-blue-900 font-medium">
@@ -466,19 +489,16 @@ export default function CitizenPortal({
 
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-slate-700 font-medium mb-1">Disaster Type</label>
+                    <label className="block text-slate-700 font-medium mb-1">Emergency Category</label>
                     <select
                       value={sosCategory}
                       onChange={(e) => setSosCategory(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-medium"
                     >
-                      <option value="FLOOD_TRAPPED">🌊 Flood / Inundation Evacuation</option>
-                      <option value="CYCLONE_STORM">🌀 Cyclone & Severe Storm Surge</option>
-                      <option value="EARTHQUAKE_TREMOR">🌋 Earthquake / Structure Tremor</option>
-                      <option value="LANDSLIDE_MUDSLIDE">⛰️ Landslide / Mudslide Blockage</option>
-                      <option value="FIRE_EXPLOSION">🔥 Forest Fire / Industrial Explosion</option>
-                      <option value="DROUGHT_WATER_CRISIS">🚜 Drought & Drinking Water Scarcity</option>
-                      <option value="MEDICAL_EMERGENCY">🚑 Urgent Medical Trauma / Doctor Needed</option>
+                      <option value="FLOOD_TRAPPED">🌊 Trapped in Flood Water</option>
+                      <option value="MEDICAL_EMERGENCY">🚑 Medical Emergency / Doctor Needed</option>
+                      <option value="STRUCTURE_COLLAPSE">🏚️ Roof / Building Collapse</option>
+                      <option value="FOOD_WATER_SHORTAGE">🍞 Food & Clean Water Needed</option>
                     </select>
                   </div>
                   <div>
