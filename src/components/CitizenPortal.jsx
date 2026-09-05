@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   AlertOctagon, Phone, MapPin, Users, HeartPulse, Search, Plus, 
-  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload 
+  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, FastForward 
 } from 'lucide-react';
 import InteractiveMap from './InteractiveMap';
 
@@ -14,15 +14,16 @@ export default function CitizenPortal({
 }) {
   const [activeTab, setActiveTab] = useState('sos'); // 'sos' | 'shelters' | 'missing' | 'guide'
   
-  // SOS Form Modal State
-  const [showSosModal, setShowSosModal] = useState(false);
+  // Instant SOS State & Follow-up Modal
+  const [lastSosTicket, setLastSosTicket] = useState(null);
+  const [showFollowupModal, setShowFollowupModal] = useState(false);
   const [sosCategory, setSosCategory] = useState('FLOOD_TRAPPED');
   const [sosName, setSosName] = useState('');
   const [sosPhone, setSosPhone] = useState('');
   const [sosPeople, setSosPeople] = useState(2);
   const [sosLocation, setSosLocation] = useState('');
   const [sosNotes, setSosNotes] = useState('');
-  const [sosSubmitted, setSosSubmitted] = useState(false);
+  const [detailsSaved, setDetailsSaved] = useState(false);
 
   // Missing Person Form Modal State
   const [showMissingModal, setShowMissingModal] = useState(false);
@@ -35,24 +36,44 @@ export default function CitizenPortal({
   // Shelter Filter State
   const [shelterFilter, setShelterFilter] = useState('ALL');
 
-  const handleSosSubmit = (e) => {
-    e.preventDefault();
-    const newSos = {
-      id: `sos-${Date.now().toString().slice(-4)}`,
-      name: sosName || 'Anonymous Citizen',
-      phone: sosPhone || '+91 99999 00000',
-      peopleCount: parseInt(sosPeople) || 1,
-      location: sosLocation || 'Near Beach Road Sector 3 (GPS Auto-detected)',
-      lat: 17.6950 + (Math.random() - 0.5) * 0.04,
-      lng: 83.2250 + (Math.random() - 0.5) * 0.04,
-      urgency: sosCategory === 'MEDICAL_EMERGENCY' || sosCategory === 'FLOOD_TRAPPED' ? 'CRITICAL' : 'HIGH',
-      category: sosCategory,
+  // STEP 1: INSTANT 1-TAP SOS DISPATCH
+  const handleInstantSosClick = () => {
+    const ticketId = `SOS-${Date.now().toString().slice(-4)}`;
+    const instantSos = {
+      id: ticketId.toLowerCase(),
+      ticketCode: ticketId,
+      name: 'Victim (Instant Alert)',
+      phone: '+91 98765 43210 (Auto-detected)',
+      peopleCount: 1,
+      location: 'Beach Road Sector 4 (Auto GPS: 17.6950° N, 83.2250° E)',
+      lat: 17.6950 + (Math.random() - 0.5) * 0.03,
+      lng: 83.2250 + (Math.random() - 0.5) * 0.03,
+      urgency: 'CRITICAL',
+      category: 'IMMEDIATE_DISTRESS',
       timestamp: 'Just now',
       status: 'PENDING',
-      notes: sosNotes
+      notes: 'Instant 1-tap distress beacon transmitted from device.'
     };
-    onTriggerSos(newSos);
-    setSosSubmitted(true);
+    
+    // Dispatch immediately to Admin & NDRF without waiting!
+    onTriggerSos(instantSos);
+    setLastSosTicket(instantSos);
+    setDetailsSaved(false);
+    setShowFollowupModal(true);
+  };
+
+  // STEP 2: OPTIONAL DETAILS UPDATE
+  const handleSaveAdditionalDetails = (e) => {
+    e.preventDefault();
+    if (lastSosTicket) {
+      lastSosTicket.name = sosName || lastSosTicket.name;
+      lastSosTicket.phone = sosPhone || lastSosTicket.phone;
+      lastSosTicket.peopleCount = parseInt(sosPeople) || lastSosTicket.peopleCount;
+      lastSosTicket.location = sosLocation ? `${sosLocation} (${lastSosTicket.location})` : lastSosTicket.location;
+      lastSosTicket.category = sosCategory;
+      lastSosTicket.notes = sosNotes || lastSosTicket.notes;
+    }
+    setDetailsSaved(true);
   };
 
   const handleMissingSubmit = (e) => {
@@ -147,33 +168,35 @@ export default function CitizenPortal({
       {activeTab === 'sos' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main SOS Trigger Hero Card */}
-          <div className="lg:col-span-1 bg-gradient-to-b from-red-950/60 via-slate-900 to-slate-900 p-6 rounded-2xl border border-red-900/40 shadow-2xl flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-1 bg-gradient-to-b from-red-950/70 via-slate-900 to-slate-900 p-6 rounded-2xl border border-red-900/40 shadow-2xl flex flex-col justify-between space-y-6">
             <div>
               <div className="flex items-center gap-2 text-red-400 text-xs font-bold uppercase tracking-wider mb-2">
-                <ShieldAlert className="w-4 h-4" /> Immediate Crisis Response
+                <ShieldAlert className="w-4 h-4" /> Instant 1-Tap Emergency Beacon
               </div>
-              <h2 className="text-2xl font-extrabold text-white">Trapped or Need Evacuation?</h2>
+              <h2 className="text-2xl font-extrabold text-white">In Danger? Tap SOS Now!</h2>
               <p className="text-slate-300 text-xs mt-1 leading-relaxed">
-                Press the Emergency SOS button below to transmit your instant GPS signal directly to NDRF rescue teams and control room.
+                <strong className="text-red-400">Zero form filling required.</strong> Pressing the red button instantly transmits your GPS location and emergency signal directly to NDRF rescue boats & admin command center in <span className="underline">0.1 seconds</span>.
               </p>
             </div>
 
-            {/* Huge Pulse SOS Button */}
+            {/* Huge Instant Pulse SOS Button */}
             <div className="flex flex-col items-center justify-center py-4">
               <button
-                onClick={() => { setShowSosModal(true); setSosSubmitted(false); }}
-                className="relative group w-40 h-40 rounded-full bg-gradient-to-tr from-red-700 via-red-600 to-amber-500 text-white flex flex-col items-center justify-center shadow-2xl shadow-red-600/50 hover:scale-105 active:scale-95 transition-transform"
+                onClick={handleInstantSosClick}
+                className="relative group w-44 h-44 rounded-full bg-gradient-to-tr from-red-700 via-red-600 to-amber-500 text-white flex flex-col items-center justify-center shadow-2xl shadow-red-600/50 hover:scale-105 active:scale-95 transition-transform"
               >
-                <span className="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-30"></span>
-                <AlertOctagon className="w-14 h-14 mb-1 group-hover:rotate-12 transition-transform" />
-                <span className="text-xl font-black tracking-wider">SEND SOS</span>
-                <span className="text-[10px] font-mono text-red-200 uppercase mt-0.5">1-Tap Evac Alert</span>
+                <span className="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-40"></span>
+                <AlertOctagon className="w-16 h-16 mb-1 group-hover:rotate-12 transition-transform" />
+                <span className="text-2xl font-black tracking-wider">SEND SOS</span>
+                <span className="text-[10px] font-mono text-red-100 uppercase mt-0.5 bg-red-950/60 px-2 py-0.5 rounded-full border border-red-400/30">
+                  Instant GPS Alert
+                </span>
               </button>
             </div>
 
             {/* Quick Emergency Contacts */}
             <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800 space-y-2">
-              <div className="text-xs font-bold text-slate-300 mb-1">Direct Disaster Toll-Free:</div>
+              <div className="text-xs font-bold text-slate-300 mb-1">Direct Disaster Helplines:</div>
               <div className="grid grid-cols-2 gap-2 text-xs font-mono">
                 <a href="tel:1078" className="bg-red-950/60 border border-red-900/60 p-2 rounded text-red-300 hover:bg-red-900/60 text-center flex items-center justify-center gap-1 font-bold">
                   <Phone className="w-3 h-3" /> NDRF: 1078
@@ -402,144 +425,127 @@ export default function CitizenPortal({
         </div>
       )}
 
-      {/* SOS DISPATCH MODAL */}
-      {showSosModal && (
+      {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL */}
+      {showFollowupModal && lastSosTicket && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
-            {!sosSubmitted ? (
-              <form onSubmit={handleSosSubmit} className="space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <div className="flex items-center gap-2 text-red-500 font-bold text-base">
-                    <AlertOctagon className="w-5 h-5" /> Emergency SOS Dispatch Form
-                  </div>
-                  <button 
-                    type="button" 
-                    onClick={() => setShowSosModal(false)}
-                    className="text-slate-500 hover:text-white text-sm"
-                  >
-                    ✕
-                  </button>
+          <div className="bg-slate-900 border border-red-900/80 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                <CheckCircle className="w-5 h-5 text-emerald-500 animate-bounce" />
+                <span>EMERGENCY SOS SENT SUCCESSFULLY!</span>
+              </div>
+              <button 
+                type="button" 
+                onClick={() => setShowFollowupModal(false)}
+                className="text-slate-500 hover:text-white text-sm font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Instant Confirmation Banner */}
+            <div className="bg-red-950/80 border border-red-800 p-4 rounded-xl space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-red-400 uppercase">Distress Ticket #{lastSosTicket.ticketCode}</span>
+                <span className="text-[10px] bg-red-600 text-white font-bold px-2 py-0.5 rounded">CRITICAL SOS LIVE</span>
+              </div>
+              <p className="text-xs text-slate-200 leading-relaxed">
+                Your GPS coordinates <span className="font-mono text-emerald-400 font-bold">17.6950° N, 83.2250° E</span> have been transmitted directly to NDRF Command and nearby rescue boats.
+              </p>
+            </div>
+
+            {/* Optional Additional Details Form */}
+            {!detailsSaved ? (
+              <form onSubmit={handleSaveAdditionalDetails} className="space-y-4 pt-1">
+                <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center gap-2 text-xs text-slate-300">
+                  <Info className="w-4 h-4 text-blue-400 shrink-0" />
+                  <span><strong>Optional:</strong> If safe to do so, add extra details to help rescue workers prepare.</span>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Emergency Category</label>
-                  <select
-                    value={sosCategory}
-                    onChange={(e) => setSosCategory(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
-                  >
-                    <option value="FLOOD_TRAPPED">🌊 Trapped in Flood / High Water Level</option>
-                    <option value="MEDICAL_EMERGENCY">🚑 Urgent Medical Trauma / Doctor Needed</option>
-                    <option value="STRUCTURE_COLLAPSE">🏚️ Building / Roof Collapse Danger</option>
-                    <option value="FOOD_WATER_SHORTAGE">🍞 Food & Clean Drinking Water Shortage</option>
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Your Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Ramesh Kumar"
-                      value={sosName}
-                      onChange={(e) => setSosName(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
-                    />
+                    <label className="block text-slate-300 font-medium mb-1">Emergency Category</label>
+                    <select
+                      value={sosCategory}
+                      onChange={(e) => setSosCategory(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
+                    >
+                      <option value="FLOOD_TRAPPED">🌊 Trapped in Flood Water</option>
+                      <option value="MEDICAL_EMERGENCY">🚑 Medical Emergency / Doctor Needed</option>
+                      <option value="STRUCTURE_COLLAPSE">🏚️ Roof / Building Collapse</option>
+                      <option value="FOOD_WATER_SHORTAGE">🍞 Food & Clean Water Needed</option>
+                    </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Mobile Contact Phone</label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="+91 98765 00000"
-                      value={sosPhone}
-                      onChange={(e) => setSosPhone(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Total People Trapped</label>
+                    <label className="block text-slate-300 font-medium mb-1">Total Trapped Count</label>
                     <input
                       type="number"
                       min="1"
                       value={sosPeople}
                       onChange={(e) => setSosPeople(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label className="block text-slate-300 font-medium mb-1">Your Name</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Ramesh Kumar"
+                      value={sosName}
+                      onChange={(e) => setSosName(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">GPS Coordinates</label>
+                    <label className="block text-slate-300 font-medium mb-1">Contact Phone</label>
                     <input
-                      type="text"
-                      disabled
-                      value="17.6950 N, 83.2250 E (Auto-detected)"
-                      className="w-full bg-slate-950 border border-slate-800 text-[11px] font-mono text-emerald-400 rounded-lg p-2.5"
+                      type="tel"
+                      placeholder="+91 98765 00000"
+                      value={sosPhone}
+                      onChange={(e) => setSosPhone(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Location Details / Landmark</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. 2nd Floor, Green Roof House, near SBI ATM"
-                    value={sosLocation}
-                    onChange={(e) => setSosLocation(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Special Emergency Notes (Optional)</label>
+                <div className="text-xs">
+                  <label className="block text-slate-300 font-medium mb-1">Landmark / Special Notes</label>
                   <textarea
                     rows="2"
-                    placeholder="e.g. 1 infant present, low phone battery (12%)"
+                    placeholder="e.g. 2nd floor balcony, green building near SBI ATM"
                     value={sosNotes}
                     onChange={(e) => setSosNotes(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500"
                   ></textarea>
                 </div>
 
-                <div className="pt-2 flex items-center justify-end gap-3">
+                <div className="flex items-center justify-between pt-2 border-t border-slate-800">
                   <button
                     type="button"
-                    onClick={() => setShowSosModal(false)}
-                    className="text-xs text-slate-400 hover:text-white px-4 py-2"
+                    onClick={() => setShowFollowupModal(false)}
+                    className="text-xs text-slate-400 hover:text-white px-3 py-2"
                   >
-                    Cancel
+                    Skip (SOS Already Sent)
                   </button>
                   <button
                     type="submit"
-                    className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-6 py-2.5 rounded-lg shadow-lg shadow-red-950 transition"
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2 rounded-lg shadow-md transition"
                   >
-                    BROADCAST SOS ALERT NOW
+                    Update SOS Details
                   </button>
                 </div>
               </form>
             ) : (
-              <div className="text-center py-6 space-y-4">
-                <div className="w-16 h-16 bg-red-950 border-2 border-red-500 rounded-full flex items-center justify-center mx-auto text-red-500 animate-pulse">
-                  <CheckCircle className="w-10 h-10" />
-                </div>
-                <h3 className="text-xl font-bold text-white">Emergency SOS Broadcast Active!</h3>
-                <p className="text-xs text-slate-300 max-w-sm mx-auto">
-                  Your location and distress ticket <span className="font-mono text-red-400 font-bold">#SOS-{Date.now().toString().slice(-4)}</span> has been transmitted to NDRF Command and nearby rescue boats.
-                </p>
-                <div className="bg-slate-950 p-4 rounded-xl text-left border border-slate-800 text-xs space-y-1 font-mono">
-                  <div className="text-emerald-400">✔ Beacon Signal: Live Transmitted</div>
-                  <div className="text-slate-400">✔ Assigned Sector: Coastal Command 4</div>
-                  <div className="text-amber-400">⌛ Estimated Rescue Dispatch: &lt; 15 Mins</div>
-                </div>
+              <div className="text-center py-4 space-y-3">
+                <div className="text-emerald-400 font-bold text-sm">✔ Details Updated & Synced with NDRF Command!</div>
                 <button
-                  onClick={() => setShowSosModal(false)}
+                  onClick={() => setShowFollowupModal(false)}
                   className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-6 py-2 rounded-lg"
                 >
-                  Return to Dashboard
+                  Close & View Incident Status
                 </button>
               </div>
             )}
