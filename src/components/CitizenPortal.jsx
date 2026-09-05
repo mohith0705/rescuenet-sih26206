@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   AlertOctagon, Phone, MapPin, Users, HeartPulse, Search, Plus, 
-  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload 
+  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Building 
 } from 'lucide-react';
 import InteractiveMap from './InteractiveMap';
 import { TRANSLATIONS } from '../data/translations';
@@ -22,10 +22,10 @@ export default function CitizenPortal({
   const [lastSosTicket, setLastSosTicket] = useState(null);
   const [showFollowupModal, setShowFollowupModal] = useState(false);
   const [sosCategory, setSosCategory] = useState('FLOOD_TRAPPED');
+  const [sosPlace, setSosPlace] = useState('Coastal Sector 4, Visakhapatnam');
   const [sosName, setSosName] = useState('');
   const [sosPhone, setSosPhone] = useState('');
   const [sosPeople, setSosPeople] = useState(2);
-  const [sosLocation, setSosLocation] = useState('');
   const [sosNotes, setSosNotes] = useState('');
   const [detailsSaved, setDetailsSaved] = useState(false);
 
@@ -71,7 +71,7 @@ export default function CitizenPortal({
       lastSosTicket.name = sosName || lastSosTicket.name;
       lastSosTicket.phone = sosPhone || lastSosTicket.phone;
       lastSosTicket.peopleCount = parseInt(sosPeople) || lastSosTicket.peopleCount;
-      lastSosTicket.location = sosLocation ? `${sosLocation} (${lastSosTicket.location})` : lastSosTicket.location;
+      lastSosTicket.location = `${sosPlace || 'Sector 4'} (${lastSosTicket.location})`;
       lastSosTicket.category = sosCategory;
       lastSosTicket.notes = sosNotes || lastSosTicket.notes;
     }
@@ -427,7 +427,7 @@ export default function CitizenPortal({
         </div>
       )}
 
-      {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL WITH ALL 7 DISASTER TYPES */}
+      {/* POST-SOS FORM WITH SEPARATE DISASTER TYPE & LOCATION/PLACE FIELDS */}
       {showFollowupModal && lastSosTicket && (
         <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-red-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative">
@@ -456,7 +456,7 @@ export default function CitizenPortal({
               </p>
             </div>
 
-            {/* Optional Additional Details Form with ALL 7 Disaster Types */}
+            {/* SEPARATED DISASTER TYPE & LOCATION FIELDS */}
             {!detailsSaved ? (
               <form onSubmit={handleSaveAdditionalDetails} className="space-y-4 pt-1">
                 <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 flex items-center gap-2 text-xs text-blue-900 font-medium">
@@ -464,67 +464,84 @@ export default function CitizenPortal({
                   <span>{t.optionalFormNote}</span>
                 </div>
 
+                {/* ROW 1: Disaster Type (Select) & Disaster Place / City (Text) */}
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-slate-700 font-medium mb-1">Disaster Type</label>
+                    <label className="block text-slate-700 font-bold mb-1">1. Disaster Type</label>
                     <select
                       value={sosCategory}
                       onChange={(e) => setSosCategory(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-medium"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-semibold"
                     >
-                      <option value="FLOOD_TRAPPED">🌊 Flood / Inundation Evacuation</option>
-                      <option value="CYCLONE_STORM">🌀 Cyclone & Severe Storm Surge</option>
-                      <option value="EARTHQUAKE_TREMOR">🌋 Earthquake / Structure Tremor</option>
-                      <option value="LANDSLIDE_MUDSLIDE">⛰️ Landslide / Mudslide Blockage</option>
-                      <option value="FIRE_EXPLOSION">🔥 Forest Fire / Industrial Explosion</option>
-                      <option value="DROUGHT_WATER_CRISIS">🚜 Drought & Drinking Water Scarcity</option>
-                      <option value="MEDICAL_EMERGENCY">🚑 Urgent Medical Trauma / Doctor Needed</option>
+                      <option value="FLOOD_TRAPPED">🌊 Flood / Inundation</option>
+                      <option value="CYCLONE_STORM">🌀 Cyclone / Storm Surge</option>
+                      <option value="EARTHQUAKE_TREMOR">🌋 Earthquake / Tremor</option>
+                      <option value="LANDSLIDE_MUDSLIDE">⛰️ Landslide / Mudslide</option>
+                      <option value="FIRE_EXPLOSION">🔥 Forest Fire / Explosion</option>
+                      <option value="DROUGHT_WATER_CRISIS">🚜 Drought / Water Scarcity</option>
+                      <option value="MEDICAL_EMERGENCY">🚑 Urgent Medical Trauma</option>
                     </select>
                   </div>
+
                   <div>
-                    <label className="block text-slate-700 font-medium mb-1">Total Trapped Count</label>
+                    <label className="block text-slate-700 font-bold mb-1">2. Disaster Location / Place</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Coastal Sector 4, Visakhapatnam"
+                      value={sosPlace}
+                      onChange={(e) => setSosPlace(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-semibold"
+                    />
+                  </div>
+                </div>
+
+                {/* ROW 2: Total Trapped Count & Your Name */}
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label className="block text-slate-700 font-bold mb-1">3. Total Trapped People</label>
                     <input
                       type="number"
                       min="1"
                       value={sosPeople}
                       onChange={(e) => setSosPeople(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-medium"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-bold font-mono"
                     />
                   </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-slate-700 font-medium mb-1">Your Name</label>
+                    <label className="block text-slate-700 font-bold mb-1">4. Your Name (Optional)</label>
                     <input
                       type="text"
                       placeholder="e.g. Ramesh Kumar"
                       value={sosName}
                       onChange={(e) => setSosName(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-medium"
                     />
                   </div>
+                </div>
+
+                {/* ROW 3: Contact Phone & Landmark Notes */}
+                <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-slate-700 font-medium mb-1">Contact Phone</label>
+                    <label className="block text-slate-700 font-bold mb-1">5. Phone Number</label>
                     <input
                       type="tel"
                       placeholder="+91 98765 00000"
                       value={sosPhone}
                       onChange={(e) => setSosPhone(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-mono font-semibold"
                     />
                   </div>
-                </div>
-
-                <div className="text-xs">
-                  <label className="block text-slate-700 font-medium mb-1">Landmark / Special Notes</label>
-                  <textarea
-                    rows="2"
-                    placeholder="e.g. 2nd floor balcony, green building near SBI ATM"
-                    value={sosNotes}
-                    onChange={(e) => setSosNotes(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
-                  ></textarea>
+                  <div>
+                    <label className="block text-slate-700 font-bold mb-1">6. Landmark / Notes</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 2nd floor, green building near ATM"
+                      value={sosNotes}
+                      onChange={(e) => setSosNotes(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-medium"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t border-slate-100">
