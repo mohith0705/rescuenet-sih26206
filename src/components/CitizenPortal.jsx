@@ -114,17 +114,17 @@ export default function CitizenPortal({
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       {/* Sub Navigation Tabs */}
-      <div className="flex items-center justify-between gap-2 border-b border-[#1e2a45] pb-3 overflow-x-auto">
+      <div className="flex items-center justify-between gap-2 border-b border-slate-200 pb-3 overflow-x-auto">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('sos')}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === 'sos' 
-                ? 'bg-rose-950/60 text-rose-400 border border-rose-800/60 shadow-md' 
-                : 'text-slate-400 hover:text-white hover:bg-[#131b2e]'
+                ? 'bg-red-600 text-white shadow-md' 
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
             }`}
           >
-            <AlertOctagon className="w-4 h-4 text-rose-500" />
+            <AlertOctagon className="w-4 h-4 text-white" />
             <span>Emergency SOS & Map</span>
           </button>
 
@@ -132,11 +132,11 @@ export default function CitizenPortal({
             onClick={() => setActiveTab('shelters')}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === 'shelters' 
-                ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/60 shadow-md' 
-                : 'text-slate-400 hover:text-white hover:bg-[#131b2e]'
+                ? 'bg-emerald-600 text-white shadow-md' 
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
             }`}
           >
-            <MapPin className="w-4 h-4 text-emerald-400" />
+            <MapPin className="w-4 h-4 text-white" />
             <span>{t.sheltersTab} ({shelters.length})</span>
           </button>
 
@@ -144,11 +144,11 @@ export default function CitizenPortal({
             onClick={() => setActiveTab('missing')}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === 'missing' 
-                ? 'bg-amber-950/60 text-amber-400 border border-amber-800/60 shadow-md' 
-                : 'text-slate-400 hover:text-white hover:bg-[#131b2e]'
+                ? 'bg-amber-600 text-white shadow-md' 
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
             }`}
           >
-            <Users className="w-4 h-4 text-amber-400" />
+            <Users className="w-4 h-4 text-white" />
             <span>{t.missingTab}</span>
           </button>
 
@@ -156,11 +156,11 @@ export default function CitizenPortal({
             onClick={() => setActiveTab('guide')}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === 'guide' 
-                ? 'bg-blue-950/60 text-blue-400 border border-blue-800/60 shadow-md' 
-                : 'text-slate-400 hover:text-white hover:bg-[#131b2e]'
+                ? 'bg-blue-600 text-white shadow-md' 
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
             }`}
           >
-            <Radio className="w-4 h-4 text-blue-400" />
+            <Radio className="w-4 h-4 text-white" />
             <span>{t.guideTab}</span>
           </button>
         </div>
@@ -170,41 +170,41 @@ export default function CitizenPortal({
       {activeTab === 'sos' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main SOS Trigger Hero Card */}
-          <div className="lg:col-span-1 bg-gradient-to-b from-[#1c1222] via-[#131b2e] to-[#0c1222] p-6 rounded-2xl border border-rose-900/40 shadow-2xl flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-1 bg-white p-6 rounded-2xl border border-red-200 shadow-xl flex flex-col justify-between space-y-6">
             <div>
-              <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
-                <ShieldAlert className="w-4 h-4" /> Instant Emergency Beacon
+              <div className="flex items-center gap-2 text-red-600 text-xs font-extrabold uppercase tracking-wider mb-2 bg-red-50 p-2 rounded-lg border border-red-100">
+                <ShieldAlert className="w-4 h-4 text-red-600" /> Instant Emergency Beacon
               </div>
-              <h2 className="text-2xl font-extrabold text-white">{t.trappedHeader}</h2>
-              <p className="text-slate-300 text-xs mt-1 leading-relaxed">
+              <h2 className="text-2xl font-extrabold text-slate-900">{t.trappedHeader}</h2>
+              <p className="text-slate-600 text-xs mt-1 leading-relaxed font-medium">
                 {t.trappedDesc}
               </p>
             </div>
 
-            {/* Classic Crimson SOS Button */}
+            {/* ULTRA-DETECTABLE BRIGHT RED SOS BUTTON */}
             <div className="flex flex-col items-center justify-center py-4">
               <button
                 onClick={handleInstantSosClick}
-                className="relative group w-44 h-44 rounded-full bg-gradient-to-tr from-rose-700 via-rose-600 to-amber-600 text-white flex flex-col items-center justify-center shadow-2xl shadow-rose-900/60 hover:scale-105 active:scale-95 transition-transform"
+                className="relative group w-48 h-48 rounded-full bg-red-600 hover:bg-red-700 text-white flex flex-col items-center justify-center shadow-2xl shadow-red-500/50 hover:scale-105 active:scale-95 transition-all ring-8 ring-red-100"
               >
-                <span className="absolute inset-0 rounded-full bg-rose-600 animate-ping opacity-35"></span>
-                <AlertOctagon className="w-16 h-16 mb-1 group-hover:rotate-12 transition-transform" />
-                <span className="text-2xl font-black tracking-wider">{t.sendSos}</span>
-                <span className="text-[10px] font-mono text-rose-100 uppercase mt-0.5 bg-rose-950/80 px-2.5 py-0.5 rounded-full border border-rose-400/30 font-bold">
+                <span className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-40"></span>
+                <AlertOctagon className="w-18 h-18 mb-1 group-hover:rotate-12 transition-transform text-white" />
+                <span className="text-3xl font-black tracking-widest text-white drop-shadow-md">{t.sendSos}</span>
+                <span className="text-[10px] font-mono text-white uppercase mt-1 bg-red-800 px-3 py-0.5 rounded-full font-bold shadow-inner">
                   {t.instantGpsAlert}
                 </span>
               </button>
             </div>
 
             {/* Quick Emergency Contacts */}
-            <div className="bg-[#070b14] p-4 rounded-xl border border-[#1e2a45] space-y-2">
-              <div className="text-xs font-bold text-slate-300 mb-1">Direct Disaster Helplines:</div>
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+              <div className="text-xs font-bold text-slate-800 mb-1">Direct Emergency Toll-Free:</div>
               <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                <a href="tel:1078" className="bg-rose-950/60 border border-rose-900/60 p-2 rounded text-rose-300 hover:bg-rose-900/60 text-center flex items-center justify-center gap-1 font-bold">
-                  <Phone className="w-3 h-3" /> NDRF: 1078
+                <a href="tel:1078" className="bg-red-600 text-white border border-red-700 p-2 rounded text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-red-700">
+                  <Phone className="w-3.5 h-3.5" /> NDRF: 1078
                 </a>
-                <a href="tel:112" className="bg-[#131b2e] border border-[#1e2a45] p-2 rounded text-slate-200 hover:bg-[#1a253f] text-center flex items-center justify-center gap-1 font-bold">
-                  <Phone className="w-3 h-3" /> Police: 112
+                <a href="tel:112" className="bg-slate-900 text-white p-2 rounded text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-slate-800">
+                  <Phone className="w-3.5 h-3.5" /> Police: 112
                 </a>
               </div>
             </div>
@@ -214,12 +214,12 @@ export default function CitizenPortal({
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-rose-400" /> Live Disaster Map (Coastal Sector)
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-red-600" /> Live Disaster Map (Coastal Sector)
                 </h3>
-                <p className="text-xs text-slate-400">Real-time distress signals & open relief shelters</p>
+                <p className="text-xs text-slate-500">Real-time distress signals & open relief shelters</p>
               </div>
-              <div className="text-xs text-emerald-400 bg-emerald-950/50 border border-emerald-900 px-2.5 py-1 rounded-full font-mono font-semibold">
+              <div className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-mono font-bold">
                 ● Live GPS Tracking Active
               </div>
             </div>
@@ -235,29 +235,29 @@ export default function CitizenPortal({
       {/* TAB 2: SHELTERS & HOSPITALS */}
       {activeTab === 'shelters' && (
         <div className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-4 bg-[#131b2e] p-4 rounded-xl border border-[#1e2a45]">
+          <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
             <div>
-              <h2 className="text-lg font-bold text-white">{t.openCamps}</h2>
-              <p className="text-xs text-slate-400">Locate safe zones, food distribution centers, and medical stations</p>
+              <h2 className="text-lg font-bold text-slate-900">{t.openCamps}</h2>
+              <p className="text-xs text-slate-500">Locate safe zones, food distribution centers, and medical stations</p>
             </div>
             
             {/* Shelter Filter Buttons */}
-            <div className="flex items-center gap-2 bg-[#070b14] p-1 rounded-lg border border-[#1e2a45] text-xs">
+            <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs">
               <button 
                 onClick={() => setShelterFilter('ALL')}
-                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'ALL' ? 'bg-[#1e2a45] text-white' : 'text-slate-400'}`}
+                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'ALL' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'}`}
               >
                 All ({shelters.length})
               </button>
               <button 
                 onClick={() => setShelterFilter('FOOD')}
-                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'FOOD' ? 'bg-emerald-600 text-white' : 'text-slate-400'}`}
+                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'FOOD' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600'}`}
               >
                 3+ Days Food
               </button>
               <button 
                 onClick={() => setShelterFilter('DOCTOR')}
-                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'DOCTOR' ? 'bg-blue-600 text-white' : 'text-slate-400'}`}
+                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'DOCTOR' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600'}`}
               >
                 Doctor Available
               </button>
@@ -268,30 +268,30 @@ export default function CitizenPortal({
             {filteredShelters.map(s => {
               const occupancyPercent = Math.round((s.occupied / s.capacity) * 100);
               return (
-                <div key={s.id} className="bg-[#131b2e] p-5 rounded-xl border border-[#1e2a45] hover:border-slate-600 transition space-y-4">
+                <div key={s.id} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-4">
                   <div className="flex items-start justify-between">
                     <div>
-                      <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-900">
+                      <span className="text-[10px] uppercase font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">
                         {s.type}
                       </span>
-                      <h3 className="font-bold text-white text-base mt-2">{s.name}</h3>
-                      <p className="text-xs text-slate-400 flex items-center gap-1 mt-1">
-                        <MapPin className="w-3.5 h-3.5 text-slate-500" /> {s.address}
+                      <h3 className="font-bold text-slate-900 text-base mt-2">{s.name}</h3>
+                      <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400" /> {s.address}
                       </p>
                     </div>
                   </div>
 
                   {/* Capacity Bar */}
                   <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-slate-400">Capacity Occupancy</span>
-                      <span className={`font-mono font-bold ${occupancyPercent > 85 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                    <div className="flex justify-between text-xs mb-1 font-medium">
+                      <span className="text-slate-500">Capacity Occupancy</span>
+                      <span className={`font-mono font-bold ${occupancyPercent > 85 ? 'text-red-600' : 'text-emerald-600'}`}>
                         {s.occupied} / {s.capacity} ({occupancyPercent}%)
                       </span>
                     </div>
-                    <div className="w-full h-2 bg-[#070b14] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                       <div 
-                        className={`h-full rounded-full ${occupancyPercent > 85 ? 'bg-rose-500' : 'bg-emerald-500'}`}
+                        className={`h-full rounded-full ${occupancyPercent > 85 ? 'bg-red-600' : 'bg-emerald-600'}`}
                         style={{ width: `${occupancyPercent}%` }}
                       ></div>
                     </div>
@@ -299,17 +299,17 @@ export default function CitizenPortal({
 
                   {/* Supply Status */}
                   <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                    <div className="bg-[#070b14] p-2 rounded border border-[#1e2a45]">
-                      <div className="text-[10px] text-slate-400">{t.foodRations}</div>
-                      <div className="font-mono font-bold text-slate-200">{s.foodSupplyDays} Days</div>
+                    <div className="bg-slate-50 p-2 rounded border border-slate-200">
+                      <div className="text-[10px] text-slate-500">{t.foodRations}</div>
+                      <div className="font-mono font-bold text-slate-800">{s.foodSupplyDays} Days</div>
                     </div>
-                    <div className="bg-[#070b14] p-2 rounded border border-[#1e2a45]">
-                      <div className="text-[10px] text-slate-400">{t.waterTankers}</div>
-                      <div className="font-mono font-bold text-slate-200">{s.waterLiters}L</div>
+                    <div className="bg-slate-50 p-2 rounded border border-slate-200">
+                      <div className="text-[10px] text-slate-500">{t.waterTankers}</div>
+                      <div className="font-mono font-bold text-slate-800">{s.waterLiters}L</div>
                     </div>
-                    <div className="bg-[#070b14] p-2 rounded border border-[#1e2a45]">
-                      <div className="text-[10px] text-slate-400">{t.doctorPresent}</div>
-                      <div className={`font-mono font-bold ${s.medicalDoctorPresent ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    <div className="bg-slate-50 p-2 rounded border border-slate-200">
+                      <div className="text-[10px] text-slate-500">{t.doctorPresent}</div>
+                      <div className={`font-mono font-bold ${s.medicalDoctorPresent ? 'text-emerald-700' : 'text-amber-700'}`}>
                         {s.medicalDoctorPresent ? 'Present' : 'On Call'}
                       </div>
                     </div>
@@ -317,7 +317,7 @@ export default function CitizenPortal({
 
                   <a 
                     href={`tel:${s.contact}`}
-                    className="w-full bg-[#1e2a45] hover:bg-slate-700 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-2 transition"
+                    className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 transition shadow-sm"
                   >
                     <Phone className="w-3.5 h-3.5" /> {t.callHelpline} ({s.contact})
                   </a>
@@ -331,27 +331,27 @@ export default function CitizenPortal({
       {/* TAB 3: MISSING PERSONS */}
       {activeTab === 'missing' && (
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#131b2e] p-4 rounded-xl border border-[#1e2a45]">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
             <div>
-              <h2 className="text-lg font-bold text-white">{t.missingTab}</h2>
-              <p className="text-xs text-slate-400">Search missing loved ones or register a report for emergency rescue matching</p>
+              <h2 className="text-lg font-bold text-slate-900">{t.missingTab}</h2>
+              <p className="text-xs text-slate-500">Search missing loved ones or register a report for emergency rescue matching</p>
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <div className="relative flex-1 sm:w-64">
-                <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   placeholder="Search name or location..."
                   value={mpSearchQuery}
                   onChange={(e) => setMpSearchQuery(e.target.value)}
-                  className="w-full bg-[#070b14] border border-[#1e2a45] text-xs rounded-lg pl-9 pr-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 border border-slate-200 text-xs rounded-lg pl-9 pr-4 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
               <button
                 onClick={() => setShowMissingModal(true)}
-                className="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 shrink-0 transition"
+                className="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 shrink-0 transition shadow-sm"
               >
                 <Plus className="w-4 h-4" /> Report Missing
               </button>
@@ -360,27 +360,27 @@ export default function CitizenPortal({
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredMissingPersons.map(mp => (
-              <div key={mp.id} className="bg-[#131b2e] p-4 rounded-xl border border-[#1e2a45] flex gap-4">
+              <div key={mp.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex gap-4">
                 <img 
                   src={mp.photoUrl} 
                   alt={mp.name} 
-                  className="w-24 h-24 rounded-lg object-cover bg-[#070b14] shrink-0 border border-[#1e2a45]"
+                  className="w-24 h-24 rounded-lg object-cover bg-slate-100 shrink-0 border border-slate-200"
                 />
                 <div className="space-y-1 text-xs flex-1">
                   <div className="flex justify-between items-start">
-                    <h3 className="font-bold text-white text-base">{mp.name}</h3>
+                    <h3 className="font-bold text-slate-900 text-base">{mp.name}</h3>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                      mp.status === 'SEARCHING' ? 'bg-amber-950 text-amber-400 border border-amber-900' : 'bg-emerald-950 text-emerald-400 border border-emerald-900'
+                      mp.status === 'SEARCHING' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
                     }`}>
                       {mp.status}
                     </span>
                   </div>
-                  <p className="text-slate-400">Age: <span className="text-white font-mono">{mp.age}</span> | Gender: <span className="text-white">{mp.gender}</span></p>
-                  <p className="text-slate-300 text-[11px] leading-tight">
+                  <p className="text-slate-500">Age: <span className="text-slate-900 font-mono">{mp.age}</span> | Gender: <span className="text-slate-900">{mp.gender}</span></p>
+                  <p className="text-slate-700 text-[11px] leading-tight">
                     <span className="text-slate-500">Last Seen:</span> {mp.lastSeen}
                   </p>
-                  <div className="pt-2 border-t border-[#1e2a45] text-[10px] text-slate-400">
-                    Contact: <span className="text-amber-400 font-semibold">{mp.contactPerson}</span>
+                  <div className="pt-2 border-t border-slate-100 text-[10px] text-slate-500">
+                    Contact: <span className="text-amber-700 font-semibold">{mp.contactPerson}</span>
                   </div>
                 </div>
               </div>
@@ -391,35 +391,35 @@ export default function CitizenPortal({
 
       {/* TAB 4: OFFLINE SURVIVAL GUIDE */}
       {activeTab === 'guide' && (
-        <div className="bg-[#131b2e] p-6 rounded-2xl border border-[#1e2a45] space-y-6">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
           <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Radio className="w-5 h-5 text-blue-400" /> {t.guideTab}
+            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <Radio className="w-5 h-5 text-blue-600" /> {t.guideTab}
             </h2>
-            <p className="text-xs text-slate-400 mt-1">What to do when cellular networks and internet disconnect during cyclones or floods</p>
+            <p className="text-xs text-slate-500 mt-1">What to do when cellular networks and internet disconnect during cyclones or floods</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-[#070b14] p-5 rounded-xl border border-[#1e2a45] space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-900 flex items-center justify-center text-blue-400 font-bold">1</div>
-              <h3 className="font-bold text-white text-sm">Bluetooth & Wi-Fi Direct Mesh SOS</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+            <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-bold">1</div>
+              <h3 className="font-bold text-slate-900 text-sm">Bluetooth & Wi-Fi Direct Mesh SOS</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
                 Even without cellular towers, RescuENet relays low-power emergency beacons between nearby smartphones up to 500 meters until reaching a rescue unit device.
               </p>
             </div>
 
-            <div className="bg-[#070b14] p-5 rounded-xl border border-[#1e2a45] space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-amber-950 border border-amber-900 flex items-center justify-center text-amber-400 font-bold">2</div>
-              <h3 className="font-bold text-white text-sm">Lightweight SMS Beacon</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+            <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+              <div className="w-8 h-8 rounded-lg bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-700 font-bold">2</div>
+              <h3 className="font-bold text-slate-900 text-sm">Lightweight SMS Beacon</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
                 If mobile data is disabled, tap "Send SMS Beacon" to send a compressed 40-character text message with your raw lat/long coordinates directly to NDRF server.
               </p>
             </div>
 
-            <div className="bg-[#070b14] p-5 rounded-xl border border-[#1e2a45] space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-900 flex items-center justify-center text-emerald-400 font-bold">3</div>
-              <h3 className="font-bold text-white text-sm">Whistle & Flashlight Acoustic Signals</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+            <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+              <div className="w-8 h-8 rounded-lg bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-700 font-bold">3</div>
+              <h3 className="font-bold text-slate-900 text-sm">Whistle & Flashlight Acoustic Signals</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
                 Use 3 short bursts on your whistle or phone flashlight strobe (S-O-S pattern: 3 quick flashes, 3 long flashes, 3 quick flashes) to signal aerial rescue helicopters.
               </p>
             </div>
@@ -429,29 +429,29 @@ export default function CitizenPortal({
 
       {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL */}
       {showFollowupModal && lastSosTicket && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#131b2e] border border-rose-900/80 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative">
-            <div className="flex items-center justify-between border-b border-[#1e2a45] pb-3">
-              <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
-                <CheckCircle className="w-5 h-5 text-emerald-500 animate-bounce" />
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-red-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
+                <CheckCircle className="w-5 h-5 text-emerald-600 animate-bounce" />
                 <span>{t.sosSentTitle}</span>
               </div>
               <button 
                 type="button" 
                 onClick={() => setShowFollowupModal(false)}
-                className="text-slate-500 hover:text-white text-sm font-bold"
+                className="text-slate-400 hover:text-slate-900 text-sm font-bold"
               >
                 ✕
               </button>
             </div>
 
             {/* Instant Confirmation Banner */}
-            <div className="bg-rose-950/80 border border-rose-800 p-4 rounded-xl space-y-2">
+            <div className="bg-red-50 border border-red-200 p-4 rounded-xl space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-rose-400 uppercase">Distress Ticket #{lastSosTicket.ticketCode}</span>
-                <span className="text-[10px] bg-rose-600 text-white font-bold px-2 py-0.5 rounded">CRITICAL SOS LIVE</span>
+                <span className="text-xs font-mono font-bold text-red-700 uppercase">Distress Ticket #{lastSosTicket.ticketCode}</span>
+                <span className="text-[10px] bg-red-600 text-white font-bold px-2 py-0.5 rounded">CRITICAL SOS LIVE</span>
               </div>
-              <p className="text-xs text-slate-200 leading-relaxed">
+              <p className="text-xs text-slate-800 leading-relaxed font-medium">
                 {t.sosSentDesc}
               </p>
             </div>
@@ -459,18 +459,18 @@ export default function CitizenPortal({
             {/* Optional Additional Details Form */}
             {!detailsSaved ? (
               <form onSubmit={handleSaveAdditionalDetails} className="space-y-4 pt-1">
-                <div className="bg-[#070b14] p-3 rounded-lg border border-[#1e2a45] flex items-center gap-2 text-xs text-slate-300">
-                  <Info className="w-4 h-4 text-blue-400 shrink-0" />
+                <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 flex items-center gap-2 text-xs text-blue-900 font-medium">
+                  <Info className="w-4 h-4 text-blue-600 shrink-0" />
                   <span>{t.optionalFormNote}</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-slate-300 font-medium mb-1">Emergency Category</label>
+                    <label className="block text-slate-700 font-medium mb-1">Emergency Category</label>
                     <select
                       value={sosCategory}
                       onChange={(e) => setSosCategory(e.target.value)}
-                      className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
                     >
                       <option value="FLOOD_TRAPPED">🌊 Trapped in Flood Water</option>
                       <option value="MEDICAL_EMERGENCY">🚑 Medical Emergency / Doctor Needed</option>
@@ -479,56 +479,56 @@ export default function CitizenPortal({
                     </select>
                   </div>
                   <div>
-                    <label className="block text-slate-300 font-medium mb-1">Total Trapped Count</label>
+                    <label className="block text-slate-700 font-medium mb-1">Total Trapped Count</label>
                     <input
                       type="number"
                       min="1"
                       value={sosPeople}
                       onChange={(e) => setSosPeople(e.target.value)}
-                      className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-slate-300 font-medium mb-1">Your Name</label>
+                    <label className="block text-slate-700 font-medium mb-1">Your Name</label>
                     <input
                       type="text"
                       placeholder="e.g. Ramesh Kumar"
                       value={sosName}
                       onChange={(e) => setSosName(e.target.value)}
-                      className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-300 font-medium mb-1">Contact Phone</label>
+                    <label className="block text-slate-700 font-medium mb-1">Contact Phone</label>
                     <input
                       type="tel"
                       placeholder="+91 98765 00000"
                       value={sosPhone}
                       onChange={(e) => setSosPhone(e.target.value)}
-                      className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
                     />
                   </div>
                 </div>
 
                 <div className="text-xs">
-                  <label className="block text-slate-300 font-medium mb-1">Landmark / Special Notes</label>
+                  <label className="block text-slate-700 font-medium mb-1">Landmark / Special Notes</label>
                   <textarea
                     rows="2"
                     placeholder="e.g. 2nd floor balcony, green building near SBI ATM"
                     value={sosNotes}
                     onChange={(e) => setSosNotes(e.target.value)}
-                    className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-rose-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
                   ></textarea>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-[#1e2a45]">
+                <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                   <button
                     type="button"
                     onClick={() => setShowFollowupModal(false)}
-                    className="text-xs text-slate-400 hover:text-white px-3 py-2"
+                    className="text-xs text-slate-500 hover:text-slate-900 px-3 py-2 font-medium"
                   >
                     {t.skipSos}
                   </button>
@@ -542,10 +542,10 @@ export default function CitizenPortal({
               </form>
             ) : (
               <div className="text-center py-4 space-y-3">
-                <div className="text-emerald-400 font-bold text-sm">✔ Details Updated & Synced with NDRF Command!</div>
+                <div className="text-emerald-600 font-bold text-sm">✔ Details Updated & Synced with NDRF Command!</div>
                 <button
                   onClick={() => setShowFollowupModal(false)}
-                  className="bg-[#1e2a45] hover:bg-slate-700 text-white font-bold text-xs px-6 py-2 rounded-lg"
+                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-6 py-2 rounded-lg"
                 >
                   Close & View Incident Status
                 </button>
@@ -557,66 +557,66 @@ export default function CitizenPortal({
 
       {/* MISSING PERSON MODAL */}
       {showMissingModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#131b2e] border border-[#1e2a45] rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-[#1e2a45] pb-3">
-              <h3 className="text-base font-bold text-white">Report Missing Person</h3>
-              <button onClick={() => setShowMissingModal(false)} className="text-slate-500 hover:text-white">✕</button>
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="text-base font-bold text-slate-900">Report Missing Person</h3>
+              <button onClick={() => setShowMissingModal(false)} className="text-slate-400 hover:text-slate-900 font-bold">✕</button>
             </div>
 
             <form onSubmit={handleMissingSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Missing Person Name</label>
+                <label className="block text-slate-700 font-medium mb-1">Missing Person Name</label>
                 <input
                   type="text"
                   required
                   value={mpName}
                   onChange={(e) => setMpName(e.target.value)}
-                  className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">Age</label>
+                  <label className="block text-slate-700 font-medium mb-1">Age</label>
                   <input
                     type="number"
                     required
                     value={mpAge}
                     onChange={(e) => setMpAge(e.target.value)}
-                    className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">Photo Upload</label>
-                  <div className="w-full bg-[#070b14] border border-dashed border-slate-700 rounded-lg p-2 text-center text-slate-400 text-[11px] flex items-center justify-center gap-1">
+                  <label className="block text-slate-700 font-medium mb-1">Photo Upload</label>
+                  <div className="w-full bg-slate-50 border border-dashed border-slate-300 rounded-lg p-2 text-center text-slate-500 text-[11px] flex items-center justify-center gap-1">
                     <Upload className="w-3.5 h-3.5" /> Select Image
                   </div>
                 </div>
               </div>
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Last Known Location / Description</label>
+                <label className="block text-slate-700 font-medium mb-1">Last Known Location / Description</label>
                 <textarea
                   required
                   rows="2"
                   value={mpLastSeen}
                   onChange={(e) => setMpLastSeen(e.target.value)}
-                  className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
                 ></textarea>
               </div>
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Your Name & Phone Number</label>
+                <label className="block text-slate-700 font-medium mb-1">Your Name & Phone Number</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Ramesh (Brother) - 9876543210"
                   value={mpContact}
                   onChange={(e) => setMpContact(e.target.value)}
-                  className="w-full bg-[#070b14] border border-[#1e2a45] rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
                 />
               </div>
               <div className="pt-2 flex justify-end gap-2">
-                <button type="button" onClick={() => setShowMissingModal(false)} className="px-3 py-1.5 text-slate-400">Cancel</button>
-                <button type="submit" className="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2 rounded-lg">Submit Report</button>
+                <button type="button" onClick={() => setShowMissingModal(false)} className="px-3 py-1.5 text-slate-500 font-medium">Cancel</button>
+                <button type="submit" className="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2 rounded-lg shadow-sm">Submit Report</button>
               </div>
             </form>
           </div>

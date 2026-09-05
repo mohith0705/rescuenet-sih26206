@@ -7,16 +7,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        classic: {
-          bg: '#090d16',
-          card: '#131b2e',
-          border: '#1e2a45',
-          dark: '#050810',
-          crimson: '#e11d48',
-          amber: '#d97706',
-          emerald: '#059669',
-          navy: '#2563eb',
-          slate: '#64748b'
+        light: {
+          bg: '#f8fafc',
+          card: '#ffffff',
+          border: '#e2e8f0',
+          sidebar: '#f1f5f9',
+          text: '#0f172a',
+          muted: '#64748b'
+        },
+        emergency: {
+          red: '#dc2626',
+          brightRed: '#ef4444',
+          darkRed: '#991b1b'
         }
       },
       fontFamily: {
