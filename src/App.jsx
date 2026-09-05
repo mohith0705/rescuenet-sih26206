@@ -71,7 +71,7 @@ export default function App() {
   const activeSosCount = sosRequests.filter(s => s.status === 'PENDING').length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-100 text-slate-900 flex flex-col font-sans">
       {/* Top Header Navbar with Language Switcher */}
       <Navbar 
         activeRole={activeRole} 
@@ -116,7 +116,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-600 font-mono">
+      <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500 font-mono font-medium shadow-inner">
         RescuENet Platform &bull; Smart India Hackathon (SIH 2026) &bull; Problem Statement #26206
       </footer>
     </div>

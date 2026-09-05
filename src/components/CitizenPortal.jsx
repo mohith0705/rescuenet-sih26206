@@ -114,53 +114,53 @@ export default function CitizenPortal({
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       {/* Sub Navigation Tabs */}
-      <div className="flex items-center justify-between gap-2 border-b border-slate-200 pb-3 overflow-x-auto">
+      <div className="flex items-center justify-between gap-2 border-b border-slate-300 pb-3 overflow-x-auto bg-white p-2 rounded-xl shadow-sm border">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('sos')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-2 ${
               activeTab === 'sos' 
                 ? 'bg-red-600 text-white shadow-md' 
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
-            <AlertOctagon className="w-4 h-4 text-white" />
+            <AlertOctagon className="w-4 h-4" />
             <span>Emergency SOS & Map</span>
           </button>
 
           <button
             onClick={() => setActiveTab('shelters')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-2 ${
               activeTab === 'shelters' 
                 ? 'bg-emerald-600 text-white shadow-md' 
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
-            <MapPin className="w-4 h-4 text-white" />
+            <MapPin className="w-4 h-4" />
             <span>{t.sheltersTab} ({shelters.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('missing')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-2 ${
               activeTab === 'missing' 
                 ? 'bg-amber-600 text-white shadow-md' 
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
-            <Users className="w-4 h-4 text-white" />
+            <Users className="w-4 h-4" />
             <span>{t.missingTab}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('guide')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-2 ${
               activeTab === 'guide' 
                 ? 'bg-blue-600 text-white shadow-md' 
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
-            <Radio className="w-4 h-4 text-white" />
+            <Radio className="w-4 h-4" />
             <span>{t.guideTab}</span>
           </button>
         </div>
@@ -172,11 +172,11 @@ export default function CitizenPortal({
           {/* Main SOS Trigger Hero Card */}
           <div className="lg:col-span-1 bg-white p-6 rounded-2xl border border-red-200 shadow-xl flex flex-col justify-between space-y-6">
             <div>
-              <div className="flex items-center gap-2 text-red-600 text-xs font-extrabold uppercase tracking-wider mb-2 bg-red-50 p-2 rounded-lg border border-red-100">
-                <ShieldAlert className="w-4 h-4 text-red-600" /> Instant Emergency Beacon
+              <div className="flex items-center gap-2 text-red-700 text-xs font-extrabold uppercase tracking-wider mb-2 bg-red-50 p-2 rounded-lg border border-red-100">
+                <ShieldAlert className="w-4 h-4 text-red-600 shrink-0" /> Instant Emergency Beacon
               </div>
               <h2 className="text-2xl font-extrabold text-slate-900">{t.trappedHeader}</h2>
-              <p className="text-slate-600 text-xs mt-1 leading-relaxed font-medium">
+              <p className="text-slate-600 text-xs mt-1.5 leading-relaxed font-medium">
                 {t.trappedDesc}
               </p>
             </div>
@@ -198,12 +198,12 @@ export default function CitizenPortal({
 
             {/* Quick Emergency Contacts */}
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-              <div className="text-xs font-bold text-slate-800 mb-1">Direct Emergency Toll-Free:</div>
+              <div className="text-xs font-extrabold text-slate-900 mb-1">Direct Emergency Helplines:</div>
               <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                <a href="tel:1078" className="bg-red-600 text-white border border-red-700 p-2 rounded text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-red-700">
+                <a href="tel:1078" className="bg-red-600 text-white border border-red-700 p-2.5 rounded-lg text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-red-700">
                   <Phone className="w-3.5 h-3.5" /> NDRF: 1078
                 </a>
-                <a href="tel:112" className="bg-slate-900 text-white p-2 rounded text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-slate-800">
+                <a href="tel:112" className="bg-slate-900 text-white p-2.5 rounded-lg text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-slate-800">
                   <Phone className="w-3.5 h-3.5" /> Police: 112
                 </a>
               </div>
@@ -212,14 +212,14 @@ export default function CitizenPortal({
 
           {/* Interactive Map Area */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
               <div>
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-red-600" /> Live Disaster Map (Coastal Sector)
                 </h3>
-                <p className="text-xs text-slate-500">Real-time distress signals & open relief shelters</p>
+                <p className="text-xs text-slate-600 font-medium">Real-time distress signals & open relief shelters</p>
               </div>
-              <div className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-mono font-bold">
+              <div className="text-xs text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full font-mono font-bold">
                 ● Live GPS Tracking Active
               </div>
             </div>
@@ -238,26 +238,26 @@ export default function CitizenPortal({
           <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
             <div>
               <h2 className="text-lg font-bold text-slate-900">{t.openCamps}</h2>
-              <p className="text-xs text-slate-500">Locate safe zones, food distribution centers, and medical stations</p>
+              <p className="text-xs text-slate-600 font-medium">Locate safe zones, food distribution centers, and medical stations</p>
             </div>
             
             {/* Shelter Filter Buttons */}
             <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs">
               <button 
                 onClick={() => setShelterFilter('ALL')}
-                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'ALL' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'}`}
+                className={`px-3 py-1.5 rounded-md font-extrabold transition ${shelterFilter === 'ALL' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'}`}
               >
                 All ({shelters.length})
               </button>
               <button 
                 onClick={() => setShelterFilter('FOOD')}
-                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'FOOD' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600'}`}
+                className={`px-3 py-1.5 rounded-md font-extrabold transition ${shelterFilter === 'FOOD' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600'}`}
               >
                 3+ Days Food
               </button>
               <button 
                 onClick={() => setShelterFilter('DOCTOR')}
-                className={`px-3 py-1.5 rounded-md font-semibold transition ${shelterFilter === 'DOCTOR' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600'}`}
+                className={`px-3 py-1.5 rounded-md font-extrabold transition ${shelterFilter === 'DOCTOR' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600'}`}
               >
                 Doctor Available
               </button>
@@ -275,7 +275,7 @@ export default function CitizenPortal({
                         {s.type}
                       </span>
                       <h3 className="font-bold text-slate-900 text-base mt-2">{s.name}</h3>
-                      <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
+                      <p className="text-xs text-slate-600 flex items-center gap-1 mt-1 font-medium">
                         <MapPin className="w-3.5 h-3.5 text-slate-400" /> {s.address}
                       </p>
                     </div>
@@ -284,8 +284,8 @@ export default function CitizenPortal({
                   {/* Capacity Bar */}
                   <div>
                     <div className="flex justify-between text-xs mb-1 font-medium">
-                      <span className="text-slate-500">Capacity Occupancy</span>
-                      <span className={`font-mono font-bold ${occupancyPercent > 85 ? 'text-red-600' : 'text-emerald-600'}`}>
+                      <span className="text-slate-600">Capacity Occupancy</span>
+                      <span className={`font-mono font-bold ${occupancyPercent > 85 ? 'text-red-600' : 'text-emerald-700'}`}>
                         {s.occupied} / {s.capacity} ({occupancyPercent}%)
                       </span>
                     </div>
@@ -301,11 +301,11 @@ export default function CitizenPortal({
                   <div className="grid grid-cols-3 gap-2 text-center text-xs">
                     <div className="bg-slate-50 p-2 rounded border border-slate-200">
                       <div className="text-[10px] text-slate-500">{t.foodRations}</div>
-                      <div className="font-mono font-bold text-slate-800">{s.foodSupplyDays} Days</div>
+                      <div className="font-mono font-bold text-slate-900">{s.foodSupplyDays} Days</div>
                     </div>
                     <div className="bg-slate-50 p-2 rounded border border-slate-200">
                       <div className="text-[10px] text-slate-500">{t.waterTankers}</div>
-                      <div className="font-mono font-bold text-slate-800">{s.waterLiters}L</div>
+                      <div className="font-mono font-bold text-slate-900">{s.waterLiters}L</div>
                     </div>
                     <div className="bg-slate-50 p-2 rounded border border-slate-200">
                       <div className="text-[10px] text-slate-500">{t.doctorPresent}</div>
@@ -334,7 +334,7 @@ export default function CitizenPortal({
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
             <div>
               <h2 className="text-lg font-bold text-slate-900">{t.missingTab}</h2>
-              <p className="text-xs text-slate-500">Search missing loved ones or register a report for emergency rescue matching</p>
+              <p className="text-xs text-slate-600 font-medium">Search missing loved ones or register a report for emergency rescue matching</p>
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -375,11 +375,11 @@ export default function CitizenPortal({
                       {mp.status}
                     </span>
                   </div>
-                  <p className="text-slate-500">Age: <span className="text-slate-900 font-mono">{mp.age}</span> | Gender: <span className="text-slate-900">{mp.gender}</span></p>
+                  <p className="text-slate-600 font-medium">Age: <span className="text-slate-900 font-mono">{mp.age}</span> | Gender: <span className="text-slate-900">{mp.gender}</span></p>
                   <p className="text-slate-700 text-[11px] leading-tight">
                     <span className="text-slate-500">Last Seen:</span> {mp.lastSeen}
                   </p>
-                  <div className="pt-2 border-t border-slate-100 text-[10px] text-slate-500">
+                  <div className="pt-2 border-t border-slate-100 text-[10px] text-slate-600 font-medium">
                     Contact: <span className="text-amber-700 font-semibold">{mp.contactPerson}</span>
                   </div>
                 </div>
@@ -396,14 +396,14 @@ export default function CitizenPortal({
             <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
               <Radio className="w-5 h-5 text-blue-600" /> {t.guideTab}
             </h2>
-            <p className="text-xs text-slate-500 mt-1">What to do when cellular networks and internet disconnect during cyclones or floods</p>
+            <p className="text-xs text-slate-600 mt-1 font-medium">What to do when cellular networks and internet disconnect during cyclones or floods</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
               <div className="w-8 h-8 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-bold">1</div>
               <h3 className="font-bold text-slate-900 text-sm">Bluetooth & Wi-Fi Direct Mesh SOS</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
                 Even without cellular towers, RescuENet relays low-power emergency beacons between nearby smartphones up to 500 meters until reaching a rescue unit device.
               </p>
             </div>
@@ -411,7 +411,7 @@ export default function CitizenPortal({
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
               <div className="w-8 h-8 rounded-lg bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-700 font-bold">2</div>
               <h3 className="font-bold text-slate-900 text-sm">Lightweight SMS Beacon</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
                 If mobile data is disabled, tap "Send SMS Beacon" to send a compressed 40-character text message with your raw lat/long coordinates directly to NDRF server.
               </p>
             </div>
@@ -419,7 +419,7 @@ export default function CitizenPortal({
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
               <div className="w-8 h-8 rounded-lg bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-700 font-bold">3</div>
               <h3 className="font-bold text-slate-900 text-sm">Whistle & Flashlight Acoustic Signals</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
                 Use 3 short bursts on your whistle or phone flashlight strobe (S-O-S pattern: 3 quick flashes, 3 long flashes, 3 quick flashes) to signal aerial rescue helicopters.
               </p>
             </div>
@@ -470,7 +470,7 @@ export default function CitizenPortal({
                     <select
                       value={sosCategory}
                       onChange={(e) => setSosCategory(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-medium"
                     >
                       <option value="FLOOD_TRAPPED">🌊 Trapped in Flood Water</option>
                       <option value="MEDICAL_EMERGENCY">🚑 Medical Emergency / Doctor Needed</option>
@@ -485,7 +485,7 @@ export default function CitizenPortal({
                       min="1"
                       value={sosPeople}
                       onChange={(e) => setSosPeople(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-medium"
                     />
                   </div>
                 </div>
