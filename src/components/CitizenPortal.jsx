@@ -188,35 +188,42 @@ export default function CitizenPortal({
             </div>
 
             {/* ULTRA-PREMIUM CONCENTRIC GLOWING SOS BUTTON */}
-            <div className="flex flex-col items-center justify-center py-6 relative">
+            <div className="flex flex-col items-center justify-center py-4 relative">
               {/* Outer Pulsing Aura Rings */}
-              <div className="absolute w-56 h-56 rounded-full bg-red-500/20 animate-ping pointer-events-none"></div>
-              <div className="absolute w-48 h-48 rounded-full bg-red-600/20 animate-pulse pointer-events-none"></div>
+              <div className="absolute w-60 h-60 rounded-full bg-red-500/15 animate-ping pointer-events-none"></div>
+              <div className="absolute w-52 h-52 rounded-full bg-red-600/20 animate-pulse pointer-events-none"></div>
 
               {/* Main Button Surface */}
               <button
                 onClick={handleInstantSosClick}
-                className="relative group w-48 h-48 rounded-full bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white flex flex-col items-center justify-center shadow-2xl shadow-red-600/60 hover:scale-105 active:scale-95 transition-all ring-4 ring-white border-4 border-red-400/40 overflow-hidden px-3"
+                className="relative group w-48 h-48 rounded-full bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white flex flex-col items-center justify-center shadow-[0_0_40px_rgba(220,38,38,0.45)] hover:shadow-[0_0_60px_rgba(220,38,38,0.65)] hover:scale-105 active:scale-95 transition-all ring-8 ring-red-100 border-4 border-white cursor-pointer overflow-hidden"
               >
-                {/* Glossy Top Highlight Arc */}
-                <div className="absolute top-2 w-32 h-14 rounded-t-full bg-white/20 blur-[1px] pointer-events-none"></div>
+                {/* Radial Top Gloss Highlight */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-white/35 via-transparent to-transparent pointer-events-none"></div>
 
                 {/* Center Animated Icon */}
-                <div className="w-12 h-12 rounded-2xl bg-red-900/40 border border-white/30 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-inner shrink-0">
-                  <AlertOctagon className="w-7 h-7 text-white group-hover:rotate-12 transition-transform drop-shadow" />
+                <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform shadow-lg shrink-0">
+                  <AlertOctagon className="w-8 h-8 text-white group-hover:rotate-12 transition-transform drop-shadow-md" />
                 </div>
 
                 {/* Heavy Bold Label */}
-                <span className="text-2xl font-black tracking-widest text-white drop-shadow-md font-mono shrink-0">{t.sendSos}</span>
+                <span className="text-2xl font-black tracking-widest text-white drop-shadow-lg uppercase font-sans shrink-0">
+                  {t.sendSos}
+                </span>
 
-                {/* Subtitle Badge Pill */}
-                <div className="mt-1 flex items-center gap-1 bg-red-950/80 px-2.5 py-0.5 rounded-full border border-red-300/40 shadow-inner max-w-[85%] shrink-0">
-                  <Zap className="w-3 h-3 text-amber-400 fill-amber-400 animate-bounce shrink-0" />
-                  <span className="text-[9px] font-mono text-white font-extrabold uppercase tracking-tight truncate">
-                    {t.instantGpsAlert}
-                  </span>
-                </div>
+                {/* Micro Subtitle */}
+                <span className="mt-1 text-[10px] font-extrabold text-red-100 uppercase tracking-widest bg-red-950/40 px-2.5 py-0.5 rounded-full border border-white/20">
+                  1-Tap Dispatch
+                </span>
               </button>
+
+              {/* Live Alert Status Badge Below Button */}
+              <div className="mt-5 flex items-center gap-1.5 bg-red-50 text-red-700 px-4 py-1.5 rounded-full border border-red-200 shadow-sm">
+                <Zap className="w-4 h-4 text-amber-500 fill-amber-500 animate-bounce" />
+                <span className="text-xs font-black uppercase tracking-wider">
+                  {t.instantGpsAlert}
+                </span>
+              </div>
             </div>
 
             {/* Quick Emergency Contacts */}
