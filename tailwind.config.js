@@ -7,19 +7,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        disaster: {
-          dark: '#0f172a',
-          card: '#1e293b',
-          border: '#334155',
-          danger: '#ef4444',
-          warning: '#f59e0b',
-          success: '#10b981',
-          info: '#3b82f6'
+        classic: {
+          bg: '#090d16',
+          card: '#131b2e',
+          border: '#1e2a45',
+          dark: '#050810',
+          crimson: '#e11d48',
+          amber: '#d97706',
+          emerald: '#059669',
+          navy: '#2563eb',
+          slate: '#64748b'
         }
       },
-      animation: {
-        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
-        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      fontFamily: {
+        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Menlo', 'monospace']
       }
     },
   },

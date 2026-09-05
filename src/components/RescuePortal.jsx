@@ -28,19 +28,19 @@ export default function RescuePortal({
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       {/* Header Stat Strip */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+        <div className="bg-[#131b2e] p-4 rounded-xl border border-[#1e2a45] flex items-center justify-between shadow-lg">
           <div>
             <div className="text-xs text-slate-400 font-medium">Pending SOS Calls</div>
-            <div className="text-2xl font-extrabold text-red-400 font-mono mt-1">
+            <div className="text-2xl font-extrabold text-rose-400 font-mono mt-1">
               {sosRequests.filter(s => s.status === 'PENDING').length}
             </div>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-red-950/60 border border-red-900 flex items-center justify-center text-red-400">
+          <div className="w-10 h-10 rounded-lg bg-rose-950/60 border border-rose-900 flex items-center justify-center text-rose-400">
             <AlertTriangle className="w-5 h-5 animate-pulse" />
           </div>
         </div>
 
-        <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+        <div className="bg-[#131b2e] p-4 rounded-xl border border-[#1e2a45] flex items-center justify-between shadow-lg">
           <div>
             <div className="text-xs text-slate-400 font-medium">Critical Priority Victims</div>
             <div className="text-2xl font-extrabold text-amber-400 font-mono mt-1">{criticalCount}</div>
@@ -50,7 +50,7 @@ export default function RescuePortal({
           </div>
         </div>
 
-        <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+        <div className="bg-[#131b2e] p-4 rounded-xl border border-[#1e2a45] flex items-center justify-between shadow-lg">
           <div>
             <div className="text-xs text-slate-400 font-medium">Active NDRF Rescue Teams</div>
             <div className="text-2xl font-extrabold text-blue-400 font-mono mt-1">{rescueTeams.length}</div>
@@ -60,7 +60,7 @@ export default function RescuePortal({
           </div>
         </div>
 
-        <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+        <div className="bg-[#131b2e] p-4 rounded-xl border border-[#1e2a45] flex items-center justify-between shadow-lg">
           <div>
             <div className="text-xs text-slate-400 font-medium">Successfully Evacuated</div>
             <div className="text-2xl font-extrabold text-emerald-400 font-mono mt-1">
@@ -76,20 +76,20 @@ export default function RescuePortal({
       {/* Main Workspace Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Live Incident Dispatch Stream */}
-        <div className="lg:col-span-1 bg-slate-900 rounded-xl border border-slate-800 p-4 flex flex-col space-y-4 h-[620px]">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="lg:col-span-1 bg-[#131b2e] rounded-xl border border-[#1e2a45] p-4 flex flex-col space-y-4 h-[620px] shadow-xl">
+          <div className="flex items-center justify-between border-b border-[#1e2a45] pb-3">
             <div>
               <h3 className="font-bold text-white text-sm flex items-center gap-1.5">
-                <Radio className="w-4 h-4 text-red-500 animate-pulse" /> Live SOS Feed
+                <Radio className="w-4 h-4 text-rose-500 animate-pulse" /> Live SOS Feed
               </h3>
               <p className="text-[11px] text-slate-400">Real-time distress signals queue</p>
             </div>
 
             {/* Filter Pills */}
-            <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-[11px]">
+            <div className="flex items-center gap-1 bg-[#070b14] p-1 rounded-lg border border-[#1e2a45] text-[11px]">
               <button 
                 onClick={() => setSosFilter('PENDING')} 
-                className={`px-2 py-1 rounded font-semibold transition ${sosFilter === 'PENDING' ? 'bg-red-600 text-white' : 'text-slate-400'}`}
+                className={`px-2 py-1 rounded font-semibold transition ${sosFilter === 'PENDING' ? 'bg-rose-600 text-white' : 'text-slate-400'}`}
               >
                 Pending
               </button>
@@ -101,7 +101,7 @@ export default function RescuePortal({
               </button>
               <button 
                 onClick={() => setSosFilter('ALL')} 
-                className={`px-2 py-1 rounded font-semibold transition ${sosFilter === 'ALL' ? 'bg-slate-800 text-white' : 'text-slate-400'}`}
+                className={`px-2 py-1 rounded font-semibold transition ${sosFilter === 'ALL' ? 'bg-[#1e2a45] text-white' : 'text-slate-400'}`}
               >
                 All
               </button>
@@ -123,13 +123,13 @@ export default function RescuePortal({
                     onClick={() => setSelectedSosId(sos.id)}
                     className={`p-3.5 rounded-xl border cursor-pointer transition-all space-y-2 ${
                       isSelected
-                        ? 'bg-slate-850 border-blue-500/80 shadow-lg ring-1 ring-blue-500/30'
-                        : 'bg-slate-950 border-slate-800/80 hover:border-slate-700'
+                        ? 'bg-[#1a253f] border-blue-500/80 shadow-lg ring-1 ring-blue-500/40'
+                        : 'bg-[#070b14] border-[#1e2a45] hover:border-slate-600'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded text-white ${
-                        sos.urgency === 'CRITICAL' ? 'bg-red-600' : (sos.urgency === 'HIGH' ? 'bg-amber-600' : 'bg-blue-600')
+                        sos.urgency === 'CRITICAL' ? 'bg-rose-600' : (sos.urgency === 'HIGH' ? 'bg-amber-600' : 'bg-blue-600')
                       }`}>
                         {sos.urgency}
                       </span>
@@ -150,9 +150,9 @@ export default function RescuePortal({
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] pt-2 border-t border-slate-800/60">
+                    <div className="flex items-center justify-between text-[11px] pt-2 border-t border-[#1e2a45]">
                       <span className={`font-semibold ${
-                        sos.status === 'PENDING' ? 'text-red-400' : (sos.status === 'DISPATCHED' ? 'text-blue-400' : 'text-emerald-400')
+                        sos.status === 'PENDING' ? 'text-rose-400' : (sos.status === 'DISPATCHED' ? 'text-blue-400' : 'text-emerald-400')
                       }`}>
                         Status: {sos.status}
                       </span>
@@ -181,12 +181,12 @@ export default function RescuePortal({
 
           {/* Selected Incident Detail & Dispatch Panel */}
           {selectedSos && (
-            <div className="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+            <div className="bg-[#131b2e] p-5 rounded-xl border border-[#1e2a45] space-y-4 shadow-xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1e2a45] pb-3">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs font-bold px-2.5 py-0.5 rounded text-white ${
-                      selectedSos.urgency === 'CRITICAL' ? 'bg-red-600' : 'bg-amber-600'
+                      selectedSos.urgency === 'CRITICAL' ? 'bg-rose-600' : 'bg-amber-600'
                     }`}>
                       {selectedSos.urgency} PRIORITY INCIDENT
                     </span>
@@ -198,7 +198,7 @@ export default function RescuePortal({
                 <div className="flex items-center gap-2">
                   <a
                     href={`tel:${selectedSos.phone}`}
-                    className="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 transition"
+                    className="bg-[#1e2a45] hover:bg-slate-700 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 transition"
                   >
                     <Phone className="w-3.5 h-3.5 text-emerald-400" /> Call Victim ({selectedSos.phone})
                   </a>
@@ -206,10 +206,10 @@ export default function RescuePortal({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <div className="bg-slate-950 p-3.5 rounded-lg border border-slate-800 space-y-2">
+                <div className="bg-[#070b14] p-3.5 rounded-lg border border-[#1e2a45] space-y-2">
                   <div className="text-slate-400 font-medium">Victim Location & Landmark:</div>
                   <div className="text-white font-semibold flex items-start gap-1.5">
-                    <MapPin className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                    <MapPin className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                     <span>{selectedSos.location}</span>
                   </div>
                   <div className="text-[11px] text-slate-400 font-mono pt-1">
@@ -217,7 +217,7 @@ export default function RescuePortal({
                   </div>
                 </div>
 
-                <div className="bg-slate-950 p-3.5 rounded-lg border border-slate-800 space-y-2">
+                <div className="bg-[#070b14] p-3.5 rounded-lg border border-[#1e2a45] space-y-2">
                   <div className="text-slate-400 font-medium">Incident Notes & Needs:</div>
                   <p className="text-slate-200 italic leading-relaxed">
                     "{selectedSos.notes || 'No extra notes provided by citizen.'}"
@@ -229,13 +229,13 @@ export default function RescuePortal({
               </div>
 
               {/* Status Update & Team Assignment Control Strip */}
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+              <div className="bg-[#070b14] p-4 rounded-xl border border-[#1e2a45] flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-400 font-medium">Assign Rescue Team:</span>
                   <select
                     value={selectedSos.assignedTeam || ''}
                     onChange={(e) => onAssignTeam(selectedSos.id, e.target.value)}
-                    className="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-blue-500 font-medium"
+                    className="bg-[#131b2e] border border-[#1e2a45] text-xs text-white rounded-lg p-2 focus:outline-none focus:border-blue-500 font-medium"
                   >
                     <option value="">Select NDRF Unit...</option>
                     {rescueTeams.map(t => (
