@@ -30,3 +30,20 @@ body {
   border-radius: 0.75rem;
   z-index: 10;
 }
+
+/* Reliable Left-to-Right Scrolling Marquee Animation */
+@keyframes marqueeLTR {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-marquee-ltr {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marqueeLTR 20s linear infinite;
+  will-change: transform;
+}
