@@ -1,0 +1,36 @@
+{
+  "name": "RescuENet - Disaster Crisis & Emergency Response",
+  "short_name": "RescuENet",
+  "description": "Mobile Unified Emergency SOS, Shelter Locator, and Disaster Response App (SIH 26206)",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#070b14",
+  "theme_color": "#0c1222",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Trigger 1-Tap SOS",
+      "short_name": "SOS",
+      "description": "Immediately broadcast emergency distress beacon",
+      "url": "/?action=sos",
+      "icons": [{ "src": "/favicon.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Nearby Shelters",
+      "short_name": "Shelters",
+      "description": "Find nearest disaster relief shelters",
+      "url": "/?tab=shelters",
+      "icons": [{ "src": "/favicon.svg", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["medical", "utilities", "government"]
+}

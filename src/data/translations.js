@@ -17,11 +17,21 @@ export const TRANSLATIONS = {
     doctorPresent: "Doctor Present",
     callHelpline: "Call Shelter Helpline",
     sosSentTitle: "EMERGENCY SOS SENT SUCCESSFULLY!",
-    sosSentDesc: "Your GPS coordinates have been transmitted directly to NDRF Command and nearby rescue boats.",
     optionalFormNote: "Optional: If safe to do so, add extra details to help rescue workers.",
     updateDetails: "Update SOS Details",
     skipSos: "Skip (SOS Already Sent)",
-    liveSosTable: "Live Incoming SOS Distress Signals (Admin Monitor)"
+    liveSosTable: "Live Incoming SOS Distress Signals (Admin Monitor)",
+    tabSos: "SOS",
+    tabMap: "Shelters",
+    tabMissing: "Missing",
+    tabGuide: "Guides",
+    tabRoles: "Ops Hub",
+    online: "Online",
+    offline: "Offline Cache",
+    call112: "Dial 112",
+    call1078: "NDRF 1078",
+    switchView: "Switch App Mode",
+    mobileViewTitle: "RescuENet Mobile"
   },
   HI: {
     disasterAlert: "चक्रवात की चेतावनी सक्रिय - सेक्टर 1-5 में भारी वर्षा और तटीय लहरों की संभावना। सुरक्षित राहत शिविरों में रहें।",

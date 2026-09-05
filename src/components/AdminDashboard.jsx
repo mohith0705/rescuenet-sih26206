@@ -41,8 +41,8 @@ export default function AdminDashboard({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-      {/* Top Executive KPI Grid */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 w-full">
+      {/* Top Executive KPI Grid (Full 4-Column Command Layout) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-[#131b2e] p-5 rounded-xl border border-[#1e2a45] space-y-2 shadow-lg">
           <div className="flex justify-between items-center text-xs text-slate-400">
