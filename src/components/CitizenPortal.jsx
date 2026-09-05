@@ -49,7 +49,7 @@ export default function CitizenPortal({
       name: 'Victim (Instant Alert)',
       phone: '+91 98765 43210',
       peopleCount: 1,
-      location: 'Beach Road Sector 4 (Auto GPS: 17.6950° N, 83.2250° E)',
+      location: 'Sector 4 Crisis Zone (Auto GPS: 17.6950° N, 83.2250° E)',
       lat: 17.6950 + (Math.random() - 0.5) * 0.03,
       lng: 83.2250 + (Math.random() - 0.5) * 0.03,
       urgency: 'CRITICAL',
@@ -215,9 +215,9 @@ export default function CitizenPortal({
             <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
               <div>
                 <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-red-600" /> Live Disaster Map (Coastal Sector)
+                  <MapPin className="w-4 h-4 text-red-600" /> Multi-Disaster Live GIS Map (All Hazard Zones)
                 </h3>
-                <p className="text-xs text-slate-600 font-medium">Real-time distress signals & open relief shelters</p>
+                <p className="text-xs text-slate-600 font-medium">Real-time distress signals for Floods, Cyclones, Earthquakes & Landslides</p>
               </div>
               <div className="text-xs text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full font-mono font-bold">
                 ● Live GPS Tracking Active
@@ -427,9 +427,9 @@ export default function CitizenPortal({
         </div>
       )}
 
-      {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL (HIGH Z-INDEX Z-[9999]) */}
+      {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL WITH ALL 7 DISASTER TYPES */}
       {showFollowupModal && lastSosTicket && (
-        <div className="fixed inset-0 z-[9999] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-red-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
@@ -456,7 +456,7 @@ export default function CitizenPortal({
               </p>
             </div>
 
-            {/* Optional Additional Details Form */}
+            {/* Optional Additional Details Form with ALL 7 Disaster Types */}
             {!detailsSaved ? (
               <form onSubmit={handleSaveAdditionalDetails} className="space-y-4 pt-1">
                 <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 flex items-center gap-2 text-xs text-blue-900 font-medium">
@@ -466,16 +466,19 @@ export default function CitizenPortal({
 
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-slate-700 font-medium mb-1">Emergency Category</label>
+                    <label className="block text-slate-700 font-medium mb-1">Disaster Type</label>
                     <select
                       value={sosCategory}
                       onChange={(e) => setSosCategory(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500 font-medium"
                     >
-                      <option value="FLOOD_TRAPPED">🌊 Trapped in Flood Water</option>
-                      <option value="MEDICAL_EMERGENCY">🚑 Medical Emergency / Doctor Needed</option>
-                      <option value="STRUCTURE_COLLAPSE">🏚️ Roof / Building Collapse</option>
-                      <option value="FOOD_WATER_SHORTAGE">🍞 Food & Clean Water Needed</option>
+                      <option value="FLOOD_TRAPPED">🌊 Flood / Inundation Evacuation</option>
+                      <option value="CYCLONE_STORM">🌀 Cyclone & Severe Storm Surge</option>
+                      <option value="EARTHQUAKE_TREMOR">🌋 Earthquake / Structure Tremor</option>
+                      <option value="LANDSLIDE_MUDSLIDE">⛰️ Landslide / Mudslide Blockage</option>
+                      <option value="FIRE_EXPLOSION">🔥 Forest Fire / Industrial Explosion</option>
+                      <option value="DROUGHT_WATER_CRISIS">🚜 Drought & Drinking Water Scarcity</option>
+                      <option value="MEDICAL_EMERGENCY">🚑 Urgent Medical Trauma / Doctor Needed</option>
                     </select>
                   </div>
                   <div>
