@@ -188,26 +188,26 @@ export default function CitizenPortal({
             </div>
 
             {/* ULTRA-PREMIUM CONCENTRIC GLOWING SOS BUTTON */}
-            <div className="flex flex-col items-center justify-center py-4 relative">
+            <div className="flex flex-col items-center justify-center py-5 relative">
               {/* Outer Pulsing Aura Rings */}
-              <div className="absolute w-60 h-60 rounded-full bg-red-500/15 animate-ping pointer-events-none"></div>
-              <div className="absolute w-52 h-52 rounded-full bg-red-600/20 animate-pulse pointer-events-none"></div>
+              <div className="absolute w-56 h-56 rounded-full bg-red-500/10 animate-ping pointer-events-none"></div>
+              <div className="absolute w-50 h-50 rounded-full bg-red-600/15 animate-pulse pointer-events-none"></div>
 
               {/* Main Button Surface */}
               <button
                 onClick={handleInstantSosClick}
-                className="relative group w-48 h-48 rounded-full bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white flex flex-col items-center justify-center shadow-[0_0_40px_rgba(220,38,38,0.45)] hover:shadow-[0_0_60px_rgba(220,38,38,0.65)] hover:scale-105 active:scale-95 transition-all ring-8 ring-red-100 border-4 border-white cursor-pointer overflow-hidden"
+                className="relative group z-10 w-48 h-48 rounded-full bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white flex flex-col items-center justify-center shadow-[0_12px_30px_rgba(220,38,38,0.35)] hover:shadow-[0_18px_40px_rgba(220,38,38,0.5)] hover:scale-105 active:scale-95 transition-all ring-8 ring-red-100 border-4 border-white cursor-pointer overflow-hidden"
               >
                 {/* Radial Top Gloss Highlight */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-white/35 via-transparent to-transparent pointer-events-none"></div>
 
                 {/* Center Animated Icon */}
-                <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform shadow-lg shrink-0">
+                <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform shadow-md shrink-0">
                   <AlertOctagon className="w-8 h-8 text-white group-hover:rotate-12 transition-transform drop-shadow-md" />
                 </div>
 
                 {/* Heavy Bold Label */}
-                <span className="text-2xl font-black tracking-widest text-white drop-shadow-lg uppercase font-sans shrink-0">
+                <span className="text-2xl font-black tracking-widest text-white drop-shadow-md uppercase font-sans shrink-0">
                   {t.sendSos}
                 </span>
 
@@ -218,7 +218,7 @@ export default function CitizenPortal({
               </button>
 
               {/* Live Alert Status Badge Below Button */}
-              <div className="mt-5 flex items-center gap-1.5 bg-red-50 text-red-700 px-4 py-1.5 rounded-full border border-red-200 shadow-sm">
+              <div className="relative z-10 mt-6 flex items-center gap-1.5 bg-red-50 text-red-700 px-4 py-1.5 rounded-full border border-red-200 shadow-sm">
                 <Zap className="w-4 h-4 text-amber-500 fill-amber-500 animate-bounce" />
                 <span className="text-xs font-black uppercase tracking-wider">
                   {t.instantGpsAlert}
