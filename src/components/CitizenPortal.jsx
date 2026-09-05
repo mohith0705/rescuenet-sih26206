@@ -285,7 +285,7 @@ export default function CitizenPortal({
                   <div>
                     <div className="flex justify-between text-xs mb-1 font-medium">
                       <span className="text-slate-600">Capacity Occupancy</span>
-                      <span className={`font-mono font-bold ${occupancyPercent > 85 ? 'text-red-600' : 'text-emerald-700'}`}>
+                      <span className={`font-mono font-bold ${occupancyPercent > 85 ? 'text-red-600' : 'text-emerald-600'}`}>
                         {s.occupied} / {s.capacity} ({occupancyPercent}%)
                       </span>
                     </div>
@@ -427,9 +427,9 @@ export default function CitizenPortal({
         </div>
       )}
 
-      {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL */}
+      {/* POST-SOS CONFIRMATION & OPTIONAL FOLLOW-UP FORM MODAL (HIGH Z-INDEX Z-[9999]) */}
       {showFollowupModal && lastSosTicket && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-red-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
@@ -557,7 +557,7 @@ export default function CitizenPortal({
 
       {/* MISSING PERSON MODAL */}
       {showMissingModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <h3 className="text-base font-bold text-slate-900">Report Missing Person</h3>

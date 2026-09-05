@@ -50,20 +50,18 @@ export default function InteractiveMap({ sosList = [], shelterList = [], teamLis
   const defaultCenter = activeFocusCoord || [17.7050, 83.2500];
 
   if (mapError || !icons) {
-    // Fallback UI Map Grid if Leaflet tile server or WebGL fails
     return (
-      <div className="relative w-full h-[480px] bg-slate-950 rounded-xl border border-slate-800 p-6 flex flex-col justify-between overflow-hidden">
+      <div className="relative w-full h-[480px] bg-slate-900 rounded-xl border border-slate-200 p-6 flex flex-col justify-between overflow-hidden">
         <div className="flex items-center justify-between border-b border-slate-800 pb-3 z-10">
-          <div className="flex items-center gap-2 text-red-400 font-bold text-sm">
+          <div className="flex items-center gap-2 text-red-500 font-bold text-sm">
             <MapPin className="w-4 h-4" /> Tactical Disaster Grid View
           </div>
           <span className="text-xs text-slate-400 font-mono">Coastal Sector Grid</span>
         </div>
 
-        {/* Visual Map Grid simulation */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 my-auto z-10">
           {sosList.slice(0, 6).map(sos => (
-            <div key={sos.id} className="bg-slate-900 border border-slate-800 p-3 rounded-lg space-y-1">
+            <div key={sos.id} className="bg-slate-950 border border-slate-800 p-3 rounded-lg space-y-1">
               <div className="flex items-center justify-between">
                 <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-white ${sos.urgency === 'CRITICAL' ? 'bg-red-600' : 'bg-amber-600'}`}>
                   {sos.urgency}
@@ -76,7 +74,7 @@ export default function InteractiveMap({ sosList = [], shelterList = [], teamLis
           ))}
         </div>
 
-        <div className="text-xs text-slate-500 flex justify-between items-center z-10 border-t border-slate-900 pt-3">
+        <div className="text-xs text-slate-500 flex justify-between items-center z-10 border-t border-slate-800 pt-3">
           <span>● Active Distress Tracking Enabled</span>
           <button onClick={() => setMapError(false)} className="text-blue-400 hover:underline">Reload Map</button>
         </div>
@@ -85,7 +83,7 @@ export default function InteractiveMap({ sosList = [], shelterList = [], teamLis
   }
 
   return (
-    <div className="relative w-full h-[480px] bg-slate-900 rounded-xl overflow-hidden border border-slate-800 shadow-2xl">
+    <div className="relative w-full h-[480px] bg-slate-900 rounded-xl overflow-hidden border border-slate-200 shadow-md">
       <MapContainer 
         center={defaultCenter} 
         zoom={12} 
@@ -152,8 +150,8 @@ export default function InteractiveMap({ sosList = [], shelterList = [], teamLis
         ))}
       </MapContainer>
 
-      {/* Map Key */}
-      <div className="absolute bottom-3 left-3 z-[1000] bg-slate-900/90 backdrop-blur border border-slate-700 px-3 py-2 rounded-lg text-[11px] text-slate-200 shadow-xl space-y-1">
+      {/* Map Key Overlay - Lower z-index so popups and modals appear cleanly on top */}
+      <div className="absolute bottom-3 left-3 z-[400] bg-slate-900/90 backdrop-blur border border-slate-700 px-3 py-2 rounded-lg text-[11px] text-slate-200 shadow-xl space-y-1">
         <div className="font-bold text-slate-400 text-[10px] uppercase">Map Key</div>
         <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500"></span><span>Critical SOS</span></div>
         <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500"></span><span>Shelter</span></div>
