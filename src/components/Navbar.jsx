@@ -25,7 +25,7 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount, curr
           <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-red-950/80 to-transparent z-10 pointer-events-none"></div>
 
           {/* Moving Marquee Text */}
-          <div className="animate-marquee-ltr font-semibold tracking-wide text-red-50 text-[11px] py-0.5">
+          <div className="animate-marquee-ltr font-extrabold tracking-wider text-white text-[12px] py-0.5 drop-shadow-sm">
             <span className="shrink-0 pr-8">🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp;</span>
             <span className="shrink-0 pr-8">🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp;</span>
           </div>
