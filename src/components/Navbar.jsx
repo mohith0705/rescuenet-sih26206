@@ -19,12 +19,19 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount, curr
           <span className="font-extrabold uppercase tracking-wider text-[11px] text-white">ALERT:</span>
         </div>
 
-        {/* Marquee Motion Scrolling Text */}
-        <div className="overflow-hidden whitespace-nowrap mx-4 flex-1 relative flex items-center">
-          <div className="animate-marquee-ltr font-semibold tracking-wide text-red-50 text-[12px]">
-            <span className="shrink-0 pr-6">🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp;</span>
-            <span className="shrink-0 pr-6">🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp;</span>
+        {/* Marquee Motion Scrolling Text Container Track */}
+        <div className="mx-3 flex-1 overflow-hidden whitespace-nowrap relative flex items-center bg-red-950/45 backdrop-blur-sm py-1 px-2 rounded-lg border border-red-400/30 shadow-inner">
+          {/* Left Fade Gradient Vignette */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-red-950/80 to-transparent z-10 pointer-events-none"></div>
+
+          {/* Moving Marquee Text */}
+          <div className="animate-marquee-ltr font-semibold tracking-wide text-red-50 text-[11px] py-0.5">
+            <span className="shrink-0 pr-8">🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp;</span>
+            <span className="shrink-0 pr-8">🚨 {t.disasterAlert} &nbsp;&bull;&nbsp; 🚨 {t.disasterAlert} &nbsp;&bull;&nbsp;</span>
           </div>
+
+          {/* Right Fade Gradient Vignette */}
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-red-950/80 to-transparent z-10 pointer-events-none"></div>
         </div>
 
         {/* Language Switcher Dropdown */}
