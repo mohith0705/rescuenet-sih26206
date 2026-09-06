@@ -1,0 +1,17 @@
+{
+  "short_name": "RescuENet",
+  "name": "RescuENet Disaster Management Platform",
+  "description": "Unified Disaster Crisis & Emergency Response Platform - SIH 26206",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512 192x192 64x64 32x32"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#f8fafc",
+  "theme_color": "#dc2626",
+  "display": "standalone",
+  "orientation": "portrait"
+}
