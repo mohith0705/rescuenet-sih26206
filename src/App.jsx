@@ -76,65 +76,6 @@ export default function App() {
     setBroadcasts(prev => [newBroadcast, ...prev]);
   };
 
-  const handleInjectSimulation = () => {
-    const simulatedSignals = [
-      {
-        id: `sos-sim-${Date.now()}-1`,
-        ticketCode: `SOS-${Math.floor(1000 + Math.random() * 9000)}`,
-        victimName: 'Ramesh Kumar & Family (3 Trapped)',
-        category: 'FLOOD_TRAPPED',
-        locationName: 'Sector 4 River Bank, Chennai',
-        lat: 13.0827,
-        lng: 80.2707,
-        timestamp: 'Just Now (Simulated)',
-        status: 'PENDING',
-        details: 'Water rising up to 1st floor. Urgent boat evacuation required.',
-        assignedTeam: 'Unassigned'
-      },
-      {
-        id: `sos-sim-${Date.now()}-2`,
-        ticketCode: `SOS-${Math.floor(1000 + Math.random() * 9000)}`,
-        victimName: 'Priya Sharma (5 Trapped)',
-        category: 'CYCLONE_DAMAGE',
-        locationName: 'Fishermen Colony, Vizag',
-        lat: 17.6868,
-        lng: 83.2185,
-        timestamp: 'Just Now (Simulated)',
-        status: 'PENDING',
-        details: 'Roof collapse during cyclone winds. Immediate medical team needed.',
-        assignedTeam: 'Unassigned'
-      },
-      {
-        id: `sos-sim-${Date.now()}-3`,
-        ticketCode: `SOS-${Math.floor(1000 + Math.random() * 9000)}`,
-        victimName: 'Anil Varma (2 Trapped)',
-        category: 'LANDSLIDE_BLOCK',
-        locationName: 'Hill Road Sector 2, Wayanad',
-        lat: 11.6854,
-        lng: 76.1320,
-        timestamp: 'Just Now (Simulated)',
-        status: 'DISPATCHED',
-        details: 'Debris blocking exit. NDRF team deployed.',
-        assignedTeam: 'NDRF Unit 4 - Bravo'
-      },
-      {
-        id: `sos-sim-${Date.now()}-4`,
-        ticketCode: `SOS-${Math.floor(1000 + Math.random() * 9000)}`,
-        victimName: 'Suresh Patel (4 Trapped)',
-        category: 'EARTHQUAKE_CRACK',
-        locationName: 'Market Square, Bhuj',
-        lat: 23.2420,
-        lng: 69.6669,
-        timestamp: 'Just Now (Simulated)',
-        status: 'PENDING',
-        details: 'Building structural crack after tremor. Requires evacuation.',
-        assignedTeam: 'Unassigned'
-      }
-    ];
-
-    setSosRequests(prev => [...simulatedSignals, ...prev]);
-  };
-
   const handleUpdateShelterSupply = (shelterId, field, newValue) => {
     setShelters(prev => prev.map(s => {
       if (s.id === shelterId) {
@@ -192,7 +133,6 @@ export default function App() {
             broadcasts={broadcasts}
             onSendBroadcast={handleSendBroadcast}
             onUpdateShelterSupply={handleUpdateShelterSupply}
-            onInjectSimulatedSos={handleInjectSimulation}
           />
         )}
       </main>
