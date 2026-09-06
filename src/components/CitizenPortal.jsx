@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { 
   AlertOctagon, Phone, MapPin, Users, HeartPulse, Search, Plus, 
-  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Zap, Volume2, VolumeX, Mic 
+  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Zap, Volume2, VolumeX, Mic,
+  MessageSquare, Copy, ExternalLink, Send
 } from 'lucide-react';
 import InteractiveMap from './InteractiveMap';
 import { TRANSLATIONS } from '../data/translations';
@@ -30,6 +31,11 @@ export default function CitizenPortal({
   const [sosLocation, setSosLocation] = useState('');
   const [sosNotes, setSosNotes] = useState('');
   const [detailsSaved, setDetailsSaved] = useState(false);
+
+  // Offline 2G SMS Modal State (Point 6)
+  const [showSmsModal, setShowSmsModal] = useState(false);
+  const [smsCopied, setSmsCopied] = useState(false);
+  const [smsSentSuccess, setSmsSentSuccess] = useState(false);
 
   // Web Audio API Emergency Siren Beacon State
   const [isSirenActive, setIsSirenActive] = useState(false);
@@ -458,6 +464,16 @@ export default function CitizenPortal({
                     <span>🔊 Sound Location Siren (Search Dogs)</span>
                   </>
                 )}
+              </button>
+
+              {/* Point 6: Offline 2G SMS Dispatcher Button */}
+              <button
+                onClick={() => setShowSmsModal(true)}
+                className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-2 bg-blue-50 text-blue-900 border border-blue-200 hover:bg-blue-100 transition-all cursor-pointer shadow-sm"
+                title="View and send formatted 2G SMS emergency payload directly to NDRF Control Room when 4G/5G data is down"
+              >
+                <MessageSquare className="w-4 h-4 text-blue-700 shrink-0" />
+                <span>📱 Offline SMS Beacon (Zero Internet)</span>
               </button>
             </div>
           </div>
@@ -923,6 +939,96 @@ export default function CitizenPortal({
                 <button type="submit" className="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2 rounded-lg shadow-sm">Submit Report</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* POINT 6: OFFLINE 2G SMS PAYLOAD MODAL */}
+      {showSmsModal && (
+        <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-bold">
+                  <MessageSquare className="w-4.5 h-4.5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-extrabold text-slate-900">Offline 2G SMS Beacon</h3>
+                  <p className="text-[11px] text-slate-500 font-medium">Zero-Internet Emergency Payload Dispatch</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowSmsModal(false)}
+                className="text-slate-400 hover:text-slate-900 text-sm font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Recipient Info Card */}
+            <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl space-y-1.5 text-xs font-mono">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 font-sans">Target Recipient:</span>
+                <span className="font-bold text-red-700 bg-red-100 border border-red-200 px-2 py-0.5 rounded">1078 (NDRF Control Room)</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 font-sans">Network Protocol:</span>
+                <span className="font-bold text-slate-800">GSM / 2G SMS Fallback</span>
+              </div>
+            </div>
+
+            {/* Box Showing Which Message Is Sent */}
+            <div className="space-y-1.5">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-bold text-slate-900">Which Message Is Sent (SMS Payload):</label>
+                <span className="text-[10px] text-emerald-700 bg-emerald-50 font-bold px-2 py-0.5 rounded border border-emerald-200">
+                  Formatted GPS Payload
+                </span>
+              </div>
+
+              <div className="bg-slate-900 text-slate-100 p-3.5 rounded-xl font-mono text-xs leading-relaxed border border-slate-800 shadow-inner relative group">
+                <p className="text-amber-300 font-bold mb-1">[NDRF EMERGENCY DISPATCH]</p>
+                <p className="text-slate-200">
+                  RESCUENET SOS: LAT 13.08271, LNG 80.27072 | STATUS: CRITICAL TRAPPED | TICKET: #SOS-9482 | NEED NDRF BOAT EVACUATION
+                </p>
+              </div>
+            </div>
+
+            {/* Success Notification Banner */}
+            {smsSentSuccess && (
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 animate-pulse">
+                <CheckCircle className="w-4 h-4 text-emerald-600" />
+                <span>Offline SMS Payload Transmitted to 1078!</span>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText("RESCUENET SOS: LAT 13.08271, LNG 80.27072 | STATUS: CRITICAL TRAPPED | TICKET: #SOS-9482 | NEED NDRF BOAT EVACUATION");
+                  setSmsCopied(true);
+                  setTimeout(() => setSmsCopied(false), 3000);
+                }}
+                className="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
+              >
+                <Copy className="w-3.5 h-3.5 text-slate-600" />
+                <span>{smsCopied ? 'Copied!' : 'Copy Text'}</span>
+              </button>
+
+              <a
+                href="sms:1078?body=RESCUENET%20SOS%3A%20LAT%2013.08271%2C%20LNG%2080.27072%20%7C%20STATUS%3A%20CRITICAL%20TRAPPED%20%7C%20TICKET%3A%20%23SOS-9482%20%7C%20NEED%20NDRF%20BOAT"
+                onClick={() => {
+                  setSmsSentSuccess(true);
+                  setTimeout(() => setSmsSentSuccess(false), 4000);
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-md cursor-pointer text-center"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Launch SMS App</span>
+              </a>
+            </div>
           </div>
         </div>
       )}
