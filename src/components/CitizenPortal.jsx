@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   AlertOctagon, Phone, MapPin, Users, HeartPulse, Search, Plus, 
-  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Zap, Volume2, VolumeX 
+  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Zap, Volume2, VolumeX, Mic 
 } from 'lucide-react';
 import InteractiveMap from './InteractiveMap';
 import { TRANSLATIONS } from '../data/translations';
@@ -36,6 +36,59 @@ export default function CitizenPortal({
   const audioCtxRef = React.useRef(null);
   const oscRef = React.useRef(null);
   const intervalRef = React.useRef(null);
+
+  // Web Speech API Voice SOS Trigger (Keyword: "HELP NET")
+  const [isVoiceListening, setIsVoiceListening] = useState(false);
+  const recognitionRef = React.useRef(null);
+
+  const toggleVoiceSos = () => {
+    if (isVoiceListening) {
+      if (recognitionRef.current) {
+        try { recognitionRef.current.stop(); } catch(e){}
+      }
+      setIsVoiceListening(false);
+    } else {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Voice recognition is supported in Chrome, Edge, and Safari. Please allow microphone access.");
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event) => {
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript.toLowerCase();
+          if (transcript.includes('help net') || transcript.includes('helpnet') || transcript.includes('sos') || transcript.includes('rescuenet')) {
+            recognition.stop();
+            setIsVoiceListening(false);
+            handleInstantSosClick();
+            alert("🚨 Voice Emergency Alert Triggered! Keyword 'HELP NET' detected.");
+            break;
+          }
+        }
+      };
+
+      recognition.onerror = () => {
+        setIsVoiceListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsVoiceListening(false);
+      };
+
+      try {
+        recognition.start();
+        recognitionRef.current = recognition;
+        setIsVoiceListening(true);
+      } catch(err) {
+        console.error("Speech Recognition Error", err);
+      }
+    }
+  };
 
   const toggleAudioSiren = () => {
     if (isSirenActive) {
@@ -301,6 +354,20 @@ export default function CitizenPortal({
                   {t.instantGpsAlert}
                 </span>
               </div>
+
+              {/* Voice-Activated SOS Assistant (Trigger Phrase: "HELP NET") */}
+              <button
+                onClick={toggleVoiceSos}
+                className={`relative z-10 mt-3 flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border cursor-pointer shadow-sm ${
+                  isVoiceListening
+                    ? 'bg-red-600 text-white border-red-500 animate-pulse font-black'
+                    : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'
+                }`}
+                title="Trapped citizens can activate voice recognition and say 'HELP NET' out loud to trigger emergency SOS"
+              >
+                <Mic className={`w-3.5 h-3.5 ${isVoiceListening ? 'text-white animate-bounce' : 'text-red-600'}`} />
+                <span>{isVoiceListening ? '🎙️ Listening... (Say "HELP NET")' : '🎙️ Voice SOS (Say "HELP NET")'}</span>
+              </button>
             </div>
 
             {/* Quick Emergency Contacts & Audio Siren */}
