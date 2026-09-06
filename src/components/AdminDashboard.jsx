@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Building2, Users, AlertTriangle, ShieldCheck, Send, Radio, 
-  PackageCheck, Truck, Droplets, Utensils, HeartPulse, Activity, Plus, MapPin, Clock 
+  PackageCheck, Truck, Droplets, Utensils, HeartPulse, Activity, Plus, MapPin, Clock, Zap, CheckCircle 
 } from 'lucide-react';
 
 export default function AdminDashboard({ 
@@ -10,17 +10,27 @@ export default function AdminDashboard({
   rescueTeams, 
   broadcasts, 
   onSendBroadcast,
-  onUpdateShelterSupply
+  onUpdateShelterSupply,
+  onInjectSimulatedSos
 }) {
   const [bcLevel, setBcLevel] = useState('RED_ALERT');
   const [bcTitle, setBcTitle] = useState('');
   const [bcArea, setBcArea] = useState('');
   const [bcMessage, setBcMessage] = useState('');
   const [bcSentSuccess, setBcSentSuccess] = useState(false);
+  const [simSuccess, setSimSuccess] = useState(false);
 
   const totalCapacity = shelters.reduce((acc, s) => acc + s.capacity, 0);
   const totalOccupied = shelters.reduce((acc, s) => acc + s.occupied, 0);
   const activeSosCount = sosRequests.filter(s => s.status !== 'RESCUED').length;
+
+  const handleSimulateClick = () => {
+    if (onInjectSimulatedSos) {
+      onInjectSimulatedSos();
+      setSimSuccess(true);
+      setTimeout(() => setSimSuccess(false), 4000);
+    }
+  };
 
   const handleBroadcastSubmit = (e) => {
     e.preventDefault();
@@ -42,6 +52,37 @@ export default function AdminDashboard({
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+      {/* Simulation & Command Banner Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-slate-800 to-red-950 p-5 rounded-2xl border border-red-900/40 text-white shadow-xl">
+        <div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h2 className="text-xl font-extrabold font-mono tracking-tight text-white flex items-center gap-2">
+              <Activity className="w-5 h-5 text-red-500 animate-pulse" /> Admin Disaster Command Center
+            </h2>
+            <span className="text-[10px] bg-red-600 text-white font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+              SIH 26206 LIVE
+            </span>
+          </div>
+          <p className="text-xs text-slate-300 mt-1 font-medium">Real-Time Distress Beacon Analytics & NDRF Resource Dispatch</p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {simSuccess && (
+            <div className="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 animate-pulse">
+              <CheckCircle className="w-4 h-4 text-emerald-400" /> +4 Live Signals Injected!
+            </div>
+          )}
+
+          <button
+            onClick={handleSimulateClick}
+            className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shrink-0 transition-all shadow-lg shadow-red-900/50 hover:scale-105 active:scale-95 border border-red-400/30 cursor-pointer"
+            title="Click during live judge presentation to populate 4 realistic disaster SOS distress signals across hazard map"
+          >
+            <Zap className="w-4 h-4 text-amber-300 fill-amber-300 animate-bounce" />
+            <span>⚡ Inject Live SIH Simulation</span>
+          </button>
+        </div>
+      </div>
       {/* Top Executive KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
