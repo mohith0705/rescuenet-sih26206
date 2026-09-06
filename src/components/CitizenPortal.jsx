@@ -41,18 +41,15 @@ export default function CitizenPortal({
   const [isVoiceListening, setIsVoiceListening] = useState(false);
   const recognitionRef = React.useRef(null);
 
-  const toggleVoiceSos = () => {
-    if (isVoiceListening) {
+  const toggleVoiceSos = (forceStart = false) => {
+    if (isVoiceListening && !forceStart) {
       if (recognitionRef.current) {
         try { recognitionRef.current.stop(); } catch(e){}
       }
       setIsVoiceListening(false);
     } else {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        alert("Voice recognition is supported in Chrome, Edge, and Safari. Please allow microphone access.");
-        return;
-      }
+      if (!SpeechRecognition) return;
 
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
@@ -66,7 +63,7 @@ export default function CitizenPortal({
             recognition.stop();
             setIsVoiceListening(false);
             handleInstantSosClick();
-            alert("🚨 Voice Emergency Alert Triggered! Keyword 'HELP NET' detected.");
+            alert("🚨 Hands-Free Emergency SOS Triggered! Phrase 'HELP NET' detected.");
             break;
           }
         }
@@ -77,7 +74,12 @@ export default function CitizenPortal({
       };
 
       recognition.onend = () => {
-        setIsVoiceListening(false);
+        // Auto-restart for continuous background listening
+        if (isVoiceListening && recognitionRef.current) {
+          try { recognition.start(); } catch(e){}
+        } else {
+          setIsVoiceListening(false);
+        }
       };
 
       try {
@@ -89,6 +91,59 @@ export default function CitizenPortal({
       }
     }
   };
+
+  // Auto-Activate Hands-Free Voice & Mobile Shake Sensor
+  React.useEffect(() => {
+    let lastX = 0, lastY = 0, lastZ = 0;
+    let shakeCount = 0;
+    let lastShakeTime = 0;
+
+    const handleMotion = (e) => {
+      const acc = e.accelerationIncludingGravity;
+      if (!acc) return;
+
+      const deltaX = Math.abs(acc.x - lastX);
+      const deltaY = Math.abs(acc.y - lastY);
+      const deltaZ = Math.abs(acc.z - lastZ);
+
+      if (deltaX + deltaY + deltaZ > 24) {
+        const now = Date.now();
+        if (now - lastShakeTime > 500) {
+          shakeCount++;
+          lastShakeTime = now;
+          if (shakeCount >= 2) {
+            handleInstantSosClick();
+            shakeCount = 0;
+          }
+        }
+      }
+
+      lastX = acc.x;
+      lastY = acc.y;
+      lastZ = acc.z;
+    };
+
+    if (window.DeviceMotionEvent) {
+      window.addEventListener('devicemotion', handleMotion);
+    }
+
+    const startVoiceAuto = () => {
+      toggleVoiceSos(true);
+      document.removeEventListener('click', startVoiceAuto);
+      document.removeEventListener('touchstart', startVoiceAuto);
+    };
+
+    document.addEventListener('click', startVoiceAuto);
+    document.addEventListener('touchstart', startVoiceAuto);
+
+    return () => {
+      if (window.DeviceMotionEvent) {
+        window.removeEventListener('devicemotion', handleMotion);
+      }
+      document.removeEventListener('click', startVoiceAuto);
+      document.removeEventListener('touchstart', startVoiceAuto);
+    };
+  }, []);
 
   const toggleAudioSiren = () => {
     if (isSirenActive) {
