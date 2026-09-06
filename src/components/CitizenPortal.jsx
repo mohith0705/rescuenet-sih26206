@@ -12,7 +12,9 @@ export default function CitizenPortal({
   missingPersons, 
   onTriggerSos, 
   onReportMissingPerson,
-  currentLang = 'EN'
+  currentLang = 'EN',
+  isPowerSaver = false,
+  isOnline = true
 }) {
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.EN;
 
@@ -165,6 +167,17 @@ export default function CitizenPortal({
           </button>
         </div>
       </div>
+
+      {/* Power Saver Status Notice */}
+      {isPowerSaver && (
+        <div className="bg-amber-950/90 text-amber-200 border border-amber-500/40 p-3.5 rounded-xl flex items-center justify-between text-xs font-bold shadow-md">
+          <div className="flex items-center gap-2">
+            <Zap className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>Emergency Power Saver Mode Active (3.5x Extended Battery & Low CPU Consumption)</span>
+          </div>
+          <span className="bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full text-[10px] uppercase font-mono font-extrabold border border-amber-400/30">OLED Battery Save</span>
+        </div>
+      )}
 
       {/* TAB 1: SOS & MAP */}
       {activeTab === 'sos' && (

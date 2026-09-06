@@ -1,12 +1,21 @@
 import React from 'react';
-import { ShieldAlert, Users, Radio, HeartHandshake, Languages } from 'lucide-react';
+import { ShieldAlert, Users, Radio, HeartHandshake, Languages, Wifi, WifiOff, BatteryCharging } from 'lucide-react';
 import { TRANSLATIONS } from '../data/translations';
 
-export default function Navbar({ activeRole, setActiveRole, activeSosCount, currentLang, setCurrentLang }) {
+export default function Navbar({ 
+  activeRole, 
+  setActiveRole, 
+  activeSosCount, 
+  currentLang, 
+  setCurrentLang,
+  isPowerSaver,
+  setIsPowerSaver,
+  isOnline
+}) {
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.EN;
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <header className={`sticky top-0 z-50 backdrop-blur border-b transition-colors ${isPowerSaver ? 'bg-slate-900/95 border-slate-800 text-white' : 'bg-white/95 border-slate-200 shadow-sm'}`}>
       {/* Sleek Emergency Red Ticker with Continuous Marquee Motion */}
       <div className="bg-gradient-to-r from-red-700 via-red-600 to-rose-700 text-white text-xs px-4 py-2 flex items-center justify-between shadow-md relative overflow-hidden">
         
@@ -62,17 +71,42 @@ export default function Navbar({ activeRole, setActiveRole, activeSosCount, curr
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shadow-md shadow-red-200">
+          <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shadow-md shadow-red-200 shrink-0">
             <ShieldAlert className="w-6 h-6 text-white" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-extrabold tracking-tight text-slate-900 font-mono">RescuENet</h1>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className={`text-xl font-extrabold tracking-tight font-mono ${isPowerSaver ? 'text-white' : 'text-slate-900'}`}>RescuENet</h1>
               <span className="text-[10px] bg-red-100 text-red-700 border border-red-200 font-bold px-2 py-0.5 rounded-full">
                 SIH 26206
               </span>
+              
+              {/* PWA Connection Status Badge */}
+              {isOnline ? (
+                <span className="flex items-center gap-1 text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300 font-extrabold px-2 py-0.5 rounded-full">
+                  <Wifi className="w-3 h-3 text-emerald-600 animate-pulse shrink-0" /> PWA Online
+                </span>
+              ) : (
+                <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-800 border border-amber-300 font-extrabold px-2 py-0.5 rounded-full">
+                  <WifiOff className="w-3 h-3 text-amber-600 shrink-0" /> Offline Mesh Active
+                </span>
+              )}
+
+              {/* Emergency Power Saver Toggle Button */}
+              <button
+                onClick={() => setIsPowerSaver(!isPowerSaver)}
+                className={`flex items-center gap-1 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border transition-all cursor-pointer ${
+                  isPowerSaver
+                    ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-md animate-pulse'
+                    : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'
+                }`}
+                title="Toggle Emergency Power Saver Mode to extend battery by 3.5x during blackout power outages"
+              >
+                <BatteryCharging className="w-3 h-3 shrink-0" />
+                {isPowerSaver ? '⚡ Power Saver ON' : '⚡ Power Saver'}
+              </button>
             </div>
-            <p className="text-xs text-slate-500 hidden sm:block font-medium">Unified Disaster Crisis & Emergency Response</p>
+            <p className={`text-xs hidden sm:block font-medium ${isPowerSaver ? 'text-slate-400' : 'text-slate-500'}`}>Unified Disaster Crisis & Emergency Response</p>
           </div>
         </div>
 

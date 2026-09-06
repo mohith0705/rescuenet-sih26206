@@ -15,6 +15,23 @@ export default function App() {
   const [activeRole, setActiveRole] = useState('citizen'); // 'citizen' | 'rescue' | 'admin'
   const [currentLang, setCurrentLang] = useState('EN'); // 'EN' | 'HI' | 'TE' | 'TA' | 'BN'
 
+  // Emergency Power Saver & PWA Offline State
+  const [isPowerSaver, setIsPowerSaver] = useState(false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  React.useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const [shelters, setShelters] = useState(INITIAL_SHELTERS);
   const [sosRequests, setSosRequests] = useState(INITIAL_SOS_REQUESTS);
   const [rescueTeams, setRescueTeams] = useState(INITIAL_RESCUE_TEAMS);
@@ -71,7 +88,7 @@ export default function App() {
   const activeSosCount = sosRequests.filter(s => s.status === 'PENDING').length;
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 flex flex-col font-sans">
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-300 ${isPowerSaver ? 'bg-slate-950 text-slate-100 grayscale-[20%]' : 'bg-slate-100 text-slate-900'}`}>
       {/* Top Header Navbar with Language Switcher */}
       <Navbar 
         activeRole={activeRole} 
@@ -79,6 +96,9 @@ export default function App() {
         activeSosCount={activeSosCount}
         currentLang={currentLang}
         setCurrentLang={setCurrentLang}
+        isPowerSaver={isPowerSaver}
+        setIsPowerSaver={setIsPowerSaver}
+        isOnline={isOnline}
       />
 
       {/* Main Content Area */}
@@ -91,6 +111,8 @@ export default function App() {
             onTriggerSos={handleTriggerSos}
             onReportMissingPerson={handleReportMissingPerson}
             currentLang={currentLang}
+            isPowerSaver={isPowerSaver}
+            isOnline={isOnline}
           />
         )}
 
