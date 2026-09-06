@@ -20,6 +20,7 @@ export default function CitizenPortal({
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.EN;
 
   const [activeTab, setActiveTab] = useState('sos'); // 'sos' | 'shelters' | 'missing' | 'guide'
+  const [activeFocusCoord, setActiveFocusCoord] = useState(null);
   
   // Instant SOS State & Follow-up Modal
   const [lastSosTicket, setLastSosTicket] = useState(null);
@@ -218,29 +219,58 @@ export default function CitizenPortal({
   // Shelter Filter State
   const [shelterFilter, setShelterFilter] = useState('ALL');
 
-  // STEP 1: INSTANT 1-TAP SOS DISPATCH
+  // STEP 1: INSTANT 1-TAP SOS DISPATCH (Real HTML5 Geolocation + Map Centering)
   const handleInstantSosClick = () => {
     const ticketId = `SOS-${Date.now().toString().slice(-4)}`;
-    const instantSos = {
-      id: ticketId.toLowerCase(),
-      ticketCode: ticketId,
-      name: 'Victim (Instant Alert)',
-      phone: '+91 98765 43210',
-      peopleCount: 1,
-      location: 'Sector 4 Crisis Zone (Auto GPS: 17.6950° N, 83.2250° E)',
-      lat: 17.6950 + (Math.random() - 0.5) * 0.03,
-      lng: 83.2250 + (Math.random() - 0.5) * 0.03,
-      urgency: 'CRITICAL',
-      category: 'IMMEDIATE_DISTRESS',
-      timestamp: 'Just now',
-      status: 'PENDING',
-      notes: 'Instant 1-tap distress beacon transmitted from device.'
-    };
     
-    onTriggerSos(instantSos);
-    setLastSosTicket(instantSos);
-    setDetailsSaved(false);
-    setShowFollowupModal(true);
+    const fallbackLat = 17.6950 + (Math.random() - 0.5) * 0.02;
+    const fallbackLng = 83.2250 + (Math.random() - 0.5) * 0.02;
+
+    const dispatchSos = (lat, lng, isGpsVerified = false) => {
+      const instantSos = {
+        id: ticketId.toLowerCase(),
+        ticketCode: ticketId,
+        name: 'Victim (Instant Alert)',
+        phone: '+91 98765 43210',
+        peopleCount: 1,
+        location: isGpsVerified 
+          ? `Verified GPS (${lat.toFixed(5)}° N, ${lng.toFixed(5)}° E)`
+          : `Sector 4 Crisis Zone (Auto GPS: ${lat.toFixed(5)}° N, ${lng.toFixed(5)}° E)`,
+        lat: lat,
+        lng: lng,
+        urgency: 'CRITICAL',
+        category: 'IMMEDIATE_DISTRESS',
+        timestamp: 'Just now',
+        status: 'PENDING',
+        notes: isGpsVerified 
+          ? 'Live high-accuracy browser HTML5 GPS coordinates acquired.'
+          : 'Instant 1-tap distress beacon transmitted from device.'
+      };
+      
+      onTriggerSos(instantSos);
+      setLastSosTicket(instantSos);
+      setActiveFocusCoord([lat, lng]);
+      setDetailsSaved(false);
+      setShowFollowupModal(true);
+      setActiveTab('sos');
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          dispatchSos(lat, lng, true);
+        },
+        (error) => {
+          console.warn("Geolocation fallback:", error);
+          dispatchSos(fallbackLat, fallbackLng, false);
+        },
+        { enableHighAccuracy: true, timeout: 4000, maximumAge: 0 }
+      );
+    } else {
+      dispatchSos(fallbackLat, fallbackLng, false);
+    }
   };
 
   const handleSaveAdditionalDetails = (e) => {
@@ -252,6 +282,7 @@ export default function CitizenPortal({
       lastSosTicket.location = sosLocation ? `${sosLocation} (${lastSosTicket.location})` : lastSosTicket.location;
       lastSosTicket.category = sosCategory;
       lastSosTicket.notes = sosNotes || lastSosTicket.notes;
+      setActiveFocusCoord([lastSosTicket.lat, lastSosTicket.lng]);
     }
     setDetailsSaved(true);
   };
@@ -487,14 +518,26 @@ export default function CitizenPortal({
                 </h3>
                 <p className="text-xs text-slate-600 font-medium">Real-time distress signals for Floods, Cyclones, Earthquakes & Landslides</p>
               </div>
-              <div className="text-xs text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full font-mono font-bold">
-                ● Live GPS Tracking Active
+              <div className="flex items-center gap-2">
+                {activeFocusCoord && (
+                  <button 
+                    onClick={() => setActiveFocusCoord(null)}
+                    className="text-xs bg-red-100 text-red-800 border border-red-300 px-2.5 py-1 rounded-full font-mono font-bold hover:bg-red-200 transition flex items-center gap-1 cursor-pointer"
+                    title="Click to reset map focus"
+                  >
+                    🎯 Focused: {activeFocusCoord[0].toFixed(4)}, {activeFocusCoord[1].toFixed(4)} ✕
+                  </button>
+                )}
+                <div className="text-xs text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full font-mono font-bold">
+                  ● Live GPS Tracking Active
+                </div>
               </div>
             </div>
 
             <InteractiveMap 
               sosList={sosRequests}
               shelterList={shelters}
+              activeFocusCoord={activeFocusCoord}
             />
           </div>
         </div>
@@ -744,6 +787,21 @@ export default function CitizenPortal({
                     <span>🔊 Sound Location Siren (Search Dogs & NDRF)</span>
                   </>
                 )}
+              </button>
+
+              {/* Recenter GIS Map on exact GPS SOS location */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (lastSosTicket) {
+                    setActiveFocusCoord([lastSosTicket.lat, lastSosTicket.lng]);
+                    setActiveTab('sos');
+                  }
+                }}
+                className="w-full bg-red-100 hover:bg-red-200 text-red-900 border border-red-300 py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
+              >
+                <Navigation className="w-4 h-4 text-red-700 shrink-0" />
+                <span>📍 Center Live GIS Map on My SOS Pin ({lastSosTicket.lat ? lastSosTicket.lat.toFixed(4) : '17.6950'}°, {lastSosTicket.lng ? lastSosTicket.lng.toFixed(4) : '83.2250'}°)</span>
               </button>
             </div>
 

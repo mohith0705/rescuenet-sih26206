@@ -6,8 +6,8 @@ import { AlertTriangle, Home, Shield, Phone, Users, MapPin } from 'lucide-react'
 function MapRecenter({ center }) {
   const map = useMap();
   useEffect(() => {
-    if (center && Array.isArray(center) && center.length === 2) {
-      map.setView(center, 13, { animate: true });
+    if (center && Array.isArray(center) && center.length === 2 && typeof center[0] === 'number' && typeof center[1] === 'number') {
+      map.flyTo(center, 14, { animate: true, duration: 1.2 });
     }
   }, [center, map]);
   return null;
@@ -103,18 +103,24 @@ export default function InteractiveMap({ sosList = [], shelterList = [], teamLis
           return (
             <Marker key={sos.id} position={[sos.lat, sos.lng]} icon={icon}>
               <Popup>
-                <div className="p-1 min-w-[200px]">
-                  <div className="flex items-center justify-between border-b pb-1 mb-1">
+                <div className="p-1.5 min-w-[220px] space-y-1">
+                  <div className="flex items-center justify-between border-b pb-1">
                     <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-white ${
                       sos.urgency === 'CRITICAL' ? 'bg-red-600' : 'bg-amber-600'
                     }`}>
-                      {sos.urgency} SOS
+                      {sos.urgency} SOS #{sos.ticketCode || sos.id}
                     </span>
-                    <span className="text-[10px] text-slate-500">{sos.timestamp}</span>
+                    <span className="text-[10px] text-slate-500 font-medium">{sos.timestamp}</span>
                   </div>
-                  <h4 className="font-bold text-slate-900 text-xs">{sos.name}</h4>
-                  <p className="text-[11px] text-slate-600 font-mono mt-0.5">{sos.location}</p>
-                  <p className="text-[11px] text-slate-700 font-bold mt-1">{sos.peopleCount} People trapped</p>
+                  <h4 className="font-extrabold text-slate-900 text-xs">{sos.name}</h4>
+                  <div className="bg-red-50 border border-red-200 text-red-900 text-[10px] font-mono p-1 rounded font-bold">
+                    📍 GPS: {sos.lat ? sos.lat.toFixed(5) : '17.6950'}°, {sos.lng ? sos.lng.toFixed(5) : '83.2250'}°
+                  </div>
+                  <p className="text-[11px] text-slate-600 font-medium">{sos.location}</p>
+                  <div className="flex items-center justify-between text-[11px] pt-1 border-t border-slate-100 font-bold text-slate-800">
+                    <span>👥 Trapped: {sos.peopleCount}</span>
+                    <span className="text-blue-600">{sos.status}</span>
+                  </div>
                 </div>
               </Popup>
             </Marker>
