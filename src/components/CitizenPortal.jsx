@@ -538,6 +538,7 @@ export default function CitizenPortal({
               sosList={sosRequests}
               shelterList={shelters}
               activeFocusCoord={activeFocusCoord}
+              onSelectFocus={(coords) => setActiveFocusCoord(coords)}
             />
           </div>
         </div>
@@ -626,12 +627,26 @@ export default function CitizenPortal({
                     </div>
                   </div>
 
-                  <a 
-                    href={`tel:${s.contact}`}
-                    className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 transition shadow-sm"
-                  >
-                    <Phone className="w-3.5 h-3.5" /> {t.callHelpline} ({s.contact})
-                  </a>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveFocusCoord([s.lat, s.lng]);
+                        setActiveTab('sos');
+                      }}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3 rounded-lg flex items-center justify-center gap-1.5 transition shadow-sm cursor-pointer"
+                    >
+                      <Navigation className="w-3.5 h-3.5" />
+                      <span>📍 Take Me Here</span>
+                    </button>
+
+                    <a 
+                      href={`tel:${s.contact}`}
+                      className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-lg flex items-center justify-center gap-1.5 transition shadow-sm"
+                    >
+                      <Phone className="w-3.5 h-3.5" /> {t.callHelpline}
+                    </a>
+                  </div>
                 </div>
               );
             })}
