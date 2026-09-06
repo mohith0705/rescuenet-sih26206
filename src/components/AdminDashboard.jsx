@@ -52,34 +52,34 @@ export default function AdminDashboard({
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-      {/* Simulation & Command Banner Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-slate-800 to-red-950 p-5 rounded-2xl border border-red-900/40 text-white shadow-xl">
+      {/* Command Center Title Header & Simulation Action */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4.5 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="text-xl font-extrabold font-mono tracking-tight text-white flex items-center gap-2">
-              <Activity className="w-5 h-5 text-red-500 animate-pulse" /> Admin Disaster Command Center
+            <h2 className="text-lg font-extrabold font-mono text-slate-900 flex items-center gap-2">
+              <Activity className="w-5 h-5 text-red-600" /> Admin Command Center
             </h2>
-            <span className="text-[10px] bg-red-600 text-white font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+            <span className="text-[10px] bg-red-100 text-red-700 border border-red-200 font-bold px-2 py-0.5 rounded-full">
               SIH 26206 LIVE
             </span>
           </div>
-          <p className="text-xs text-slate-300 mt-1 font-medium">Real-Time Distress Beacon Analytics & NDRF Resource Dispatch</p>
+          <p className="text-xs text-slate-500 mt-1 font-medium">Real-Time Distress Beacon Analytics & NDRF Resource Dispatch</p>
         </div>
 
         <div className="flex items-center gap-3">
           {simSuccess && (
-            <div className="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 animate-pulse">
-              <CheckCircle className="w-4 h-4 text-emerald-400" /> +4 Live Signals Injected!
+            <div className="bg-emerald-50 text-emerald-800 border border-emerald-300 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 animate-pulse">
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-600" /> +4 Live Signals Injected
             </div>
           )}
 
           <button
             onClick={handleSimulateClick}
-            className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shrink-0 transition-all shadow-lg shadow-red-900/50 hover:scale-105 active:scale-95 border border-red-400/30 cursor-pointer"
+            className="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
             title="Click during live judge presentation to populate 4 realistic disaster SOS distress signals across hazard map"
           >
-            <Zap className="w-4 h-4 text-amber-300 fill-amber-300 animate-bounce" />
-            <span>⚡ Inject Live SIH Simulation</span>
+            <Zap className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+            <span>Simulate Live Emergency</span>
           </button>
         </div>
       </div>
