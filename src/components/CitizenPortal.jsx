@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   AlertOctagon, Phone, MapPin, Users, HeartPulse, Search, Plus, 
-  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Zap 
+  CheckCircle, ShieldAlert, Navigation, Filter, Info, Radio, Upload, Zap, Volume2, VolumeX 
 } from 'lucide-react';
 import InteractiveMap from './InteractiveMap';
 import { TRANSLATIONS } from '../data/translations';
@@ -26,10 +26,59 @@ export default function CitizenPortal({
   const [sosCategory, setSosCategory] = useState('FLOOD_TRAPPED');
   const [sosName, setSosName] = useState('');
   const [sosPhone, setSosPhone] = useState('');
-  const [sosPeople, setSosPeople] = useState(2);
+  const [sosPeople, setSosPeople] = useState('1');
   const [sosLocation, setSosLocation] = useState('');
   const [sosNotes, setSosNotes] = useState('');
   const [detailsSaved, setDetailsSaved] = useState(false);
+
+  // Web Audio API Emergency Siren Beacon State
+  const [isSirenActive, setIsSirenActive] = useState(false);
+  const audioCtxRef = React.useRef(null);
+  const oscRef = React.useRef(null);
+  const intervalRef = React.useRef(null);
+
+  const toggleAudioSiren = () => {
+    if (isSirenActive) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (oscRef.current) {
+        try { oscRef.current.stop(); } catch(e){}
+      }
+      if (audioCtxRef.current) {
+        try { audioCtxRef.current.close(); } catch(e){}
+      }
+      setIsSirenActive(false);
+    } else {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        audioCtxRef.current = ctx;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        oscRef.current = osc;
+
+        let high = false;
+        intervalRef.current = setInterval(() => {
+          high = !high;
+          if (oscRef.current && ctx) {
+            oscRef.current.frequency.setValueAtTime(high ? 1100 : 750, ctx.currentTime);
+          }
+        }, 350);
+
+        setIsSirenActive(true);
+      } catch(err) {
+        console.error("Audio Siren Error", err);
+      }
+    }
+  };
 
   // Missing Person Form Modal State
   const [showMissingModal, setShowMissingModal] = useState(false);
@@ -254,8 +303,8 @@ export default function CitizenPortal({
               </div>
             </div>
 
-            {/* Quick Emergency Contacts */}
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+            {/* Quick Emergency Contacts & Audio Siren */}
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
               <div className="text-xs font-extrabold text-slate-900 mb-1">Direct Emergency Helplines:</div>
               <div className="grid grid-cols-2 gap-2 text-xs font-mono">
                 <a href="tel:1078" className="bg-red-600 text-white border border-red-700 p-2.5 rounded-lg text-center flex items-center justify-center gap-1 font-bold shadow-sm hover:bg-red-700">
@@ -265,6 +314,29 @@ export default function CitizenPortal({
                   <Phone className="w-3.5 h-3.5" /> Police: 112
                 </a>
               </div>
+
+              {/* Web Audio API Emergency Siren Locator */}
+              <button
+                onClick={toggleAudioSiren}
+                className={`w-full p-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-2 border transition-all cursor-pointer shadow-sm ${
+                  isSirenActive
+                    ? 'bg-amber-400 text-slate-950 border-amber-300 animate-pulse font-black'
+                    : 'bg-amber-100/80 text-amber-900 border-amber-300 hover:bg-amber-200/80'
+                }`}
+                title="Emit loud audio location siren from speaker for search dogs and NDRF rescue teams in pitch-black rubble or floods"
+              >
+                {isSirenActive ? (
+                  <>
+                    <VolumeX className="w-4 h-4 text-slate-950 shrink-0" />
+                    <span>⏹️ Mute Emergency Siren (Active)</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-4 h-4 text-amber-800 shrink-0" />
+                    <span>🔊 Sound Location Siren (Search Dogs)</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
 
@@ -504,7 +576,7 @@ export default function CitizenPortal({
             </div>
 
             {/* Instant Confirmation Banner */}
-            <div className="bg-red-50 border border-red-200 p-4 rounded-xl space-y-2">
+            <div className="bg-red-50 border border-red-200 p-4 rounded-xl space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold text-red-700 uppercase">Distress Ticket #{lastSosTicket.ticketCode}</span>
                 <span className="text-[10px] bg-red-600 text-white font-bold px-2 py-0.5 rounded">CRITICAL SOS LIVE</span>
@@ -512,6 +584,29 @@ export default function CitizenPortal({
               <p className="text-xs text-slate-800 leading-relaxed font-medium">
                 {t.sosSentDesc}
               </p>
+
+              {/* Audio Siren Beacon Button inside Modal */}
+              <button
+                type="button"
+                onClick={toggleAudioSiren}
+                className={`w-full p-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-2 border transition-all cursor-pointer shadow-sm ${
+                  isSirenActive
+                    ? 'bg-amber-400 text-slate-950 border-amber-300 animate-pulse font-black'
+                    : 'bg-amber-100/90 text-amber-900 border-amber-300 hover:bg-amber-200'
+                }`}
+              >
+                {isSirenActive ? (
+                  <>
+                    <VolumeX className="w-4 h-4 text-slate-950 shrink-0" />
+                    <span>⏹️ Mute Emergency Siren (Active)</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-4 h-4 text-amber-800 shrink-0" />
+                    <span>🔊 Sound Location Siren (Search Dogs & NDRF)</span>
+                  </>
+                )}
+              </button>
             </div>
 
             {/* Optional Additional Details Form */}
