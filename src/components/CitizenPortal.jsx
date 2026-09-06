@@ -35,9 +35,22 @@ export default function CitizenPortal({
   const [showMissingModal, setShowMissingModal] = useState(false);
   const [mpName, setMpName] = useState('');
   const [mpAge, setMpAge] = useState('');
+  const [mpGender, setMpGender] = useState('Male');
   const [mpLastSeen, setMpLastSeen] = useState('');
   const [mpContact, setMpContact] = useState('');
+  const [mpPhotoUrl, setMpPhotoUrl] = useState('');
   const [mpSearchQuery, setMpSearchQuery] = useState('');
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMpPhotoUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Shelter Filter State
   const [shelterFilter, setShelterFilter] = useState('ALL');
@@ -86,19 +99,21 @@ export default function CitizenPortal({
       id: `mp-${Date.now().toString().slice(-4)}`,
       name: mpName,
       age: parseInt(mpAge) || 25,
-      gender: 'Unspecified',
+      gender: mpGender || 'Male',
       lastSeen: mpLastSeen,
       reportDate: 'Today',
       contactPerson: mpContact,
       status: 'SEARCHING',
-      photoUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&auto=format&fit=crop&q=80'
+      photoUrl: mpPhotoUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&auto=format&fit=crop&q=80'
     };
     onReportMissingPerson(newMp);
     setShowMissingModal(false);
     setMpName('');
     setMpAge('');
+    setMpGender('Male');
     setMpLastSeen('');
     setMpContact('');
+    setMpPhotoUrl('');
   };
 
   const filteredShelters = shelters.filter(s => {
@@ -618,22 +633,51 @@ export default function CitizenPortal({
                   className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 <div>
                   <label className="block text-slate-700 font-medium mb-1">Age</label>
                   <input
                     type="number"
                     required
+                    placeholder="e.g. 25"
                     value={mpAge}
                     onChange={(e) => setMpAge(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-amber-500 font-medium"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Photo Upload</label>
-                  <div className="w-full bg-slate-50 border border-dashed border-slate-300 rounded-lg p-2 text-center text-slate-500 text-[11px] flex items-center justify-center gap-1">
-                    <Upload className="w-3.5 h-3.5" /> Select Image
-                  </div>
+                  <label className="block text-slate-700 font-medium mb-1">Gender</label>
+                  <select
+                    value={mpGender}
+                    onChange={(e) => setMpGender(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-amber-500 font-medium"
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Child / Other">Child / Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-1">Photo</label>
+                  <label className="w-full h-[38px] bg-slate-50 border border-dashed border-amber-400 rounded-lg text-center text-slate-700 text-[11px] flex items-center justify-center gap-1 cursor-pointer hover:bg-amber-50 transition-colors relative overflow-hidden">
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={handlePhotoChange} 
+                      className="hidden" 
+                    />
+                    {mpPhotoUrl ? (
+                      <div className="flex items-center gap-1">
+                        <img src={mpPhotoUrl} alt="Preview" className="w-6 h-6 rounded-full object-cover border border-amber-500 shrink-0" />
+                        <span className="text-[10px] font-bold text-amber-800">Added ✓</span>
+                      </div>
+                    ) : (
+                      <>
+                        <Upload className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                        <span className="font-bold text-amber-800">Upload</span>
+                      </>
+                    )}
+                  </label>
                 </div>
               </div>
               <div>
